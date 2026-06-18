@@ -1,0 +1,3485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+    <title>Sovereign Data Spire – BİŞİŞ Pitch Deck</title>
+
+    <!-- CRITICAL INLINE SCRIPT: ZERO FOUC -->
+    <script>
+        (function() {
+            try {
+                const themeMode = localStorage.getItem('deck_themeMode') || 'dark';
+                const lang = localStorage.getItem('deck_language') || 'en';
+                const root = document.documentElement;
+                if (themeMode === 'light') root.classList.add('light-theme');
+                else root.classList.remove('light-theme');
+                if (lang === 'ar') { root.setAttribute('dir', 'rtl');
+                    root.dataset.lang = 'ar'; } else { root.setAttribute('dir', 'ltr');
+                    root.dataset.lang = 'en'; }
+            } catch (e) {}
+        })();
+    </script>
+
+    <!-- FONTS – unified typography: Cairo for all text -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&display=swap" rel="stylesheet" />
+
+    <!-- FONT AWESOME -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+    <!-- CHART.JS -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js">
+    </script>
+
+    <style>
+        /* ============================================================
+           CSS VARIABLES & RESET – UNIFIED FONT
+           ============================================================ */
+        :root {
+            --font-family: 'Cairo', 'Segoe UI', system-ui, sans-serif;
+            --bg-primary: #0A0A0A;
+            --bg-secondary: #141414;
+            --bg-card: #1A1A1A;
+            --bg-input: #222;
+            --text-primary: #EAEAEA;
+            --text-secondary: #B0B0B0;
+            --text-muted: #777;
+            --accent-gold: #D4AF37;
+            --accent-gold-dim: rgba(212, 175, 55, 0.2);
+            --accent-copper: #B87333;
+            --border-color: #2A2A2A;
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.7);
+            --glow-gold: 0 0 30px rgba(212, 175, 55, 0.12);
+            --radius: 12px;
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --modal-overlay: rgba(0, 0, 0, 0.85);
+            --thumb-border: var(--border-color);
+            --thumb-active: var(--accent-gold);
+            --footer-color: rgba(255, 255, 255, 0.2);
+            --splash-bg: #0A0A0A;
+            --progress-bg: #222;
+            --progress-fill: var(--accent-gold);
+            --header-bg: var(--bg-secondary);
+        }
+
+        :root.light-theme {
+            --bg-primary: #F8F6F0;
+            --bg-secondary: #EFECE4;
+            --bg-card: #FFFFFF;
+            --bg-input: #F0EDE6;
+            --text-primary: #1A1A1A;
+            --text-secondary: #444;
+            --text-muted: #888;
+            --border-color: #D5CFC4;
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.10);
+            --glow-gold: 0 0 30px rgba(212, 175, 55, 0.08);
+            --modal-overlay: rgba(0, 0, 0, 0.5);
+            --thumb-border: #D5CFC4;
+            --thumb-active: var(--accent-gold);
+            --footer-color: rgba(0, 0, 0, 0.2);
+            --splash-bg: #F8F6F0;
+            --progress-bg: #E0DCD2;
+            --header-bg: var(--bg-secondary);
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: var(--font-family);
+            font-weight: 400;
+            line-height: 1.6;
+            transition: background var(--transition), color var(--transition);
+        }
+
+        ::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent-gold);
+            border-radius: 10px;
+        }
+
+        /* ============================================================
+           SPLASH SCREEN
+           ============================================================ */
+        #splash-screen {
+            position: fixed;
+            inset: 0;
+            z-index: 99999;
+            background: var(--splash-bg);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+            padding: 20px;
+        }
+        #splash-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+        #splash-screen .splash-logo {
+            font-family: var(--font-family);
+            font-weight: 900;
+            font-size: 44px;
+            color: var(--accent-gold);
+            letter-spacing: 4px;
+            text-shadow: var(--glow-gold);
+        }
+        #splash-screen .splash-sub {
+            font-size: 14px;
+            color: var(--text-secondary);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        #splash-screen .splash-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--border-color);
+            border-top-color: var(--accent-gold);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* ============================================================
+           PASSWORD OVERLAY
+           ============================================================ */
+        #password-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 9998;
+            background: var(--modal-overlay);
+            backdrop-filter: blur(12px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 16px;
+            padding: 20px;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
+        #password-overlay.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+        #password-overlay .lock-icon {
+            font-size: 48px;
+            color: var(--accent-gold);
+        }
+        #password-overlay h2 {
+            font-family: var(--font-family);
+            font-weight: 800;
+            font-size: 20px;
+            letter-spacing: 1px;
+            color: var(--text-primary);
+        }
+        #password-overlay p {
+            color: var(--text-secondary);
+            font-size: 14px;
+            max-width: 320px;
+            text-align: center;
+        }
+        #password-overlay input {
+            background: var(--bg-input);
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 12px 20px;
+            font-size: 18px;
+            font-family: var(--font-family);
+            color: var(--text-primary);
+            width: 260px;
+            max-width: 90%;
+            text-align: center;
+            letter-spacing: 4px;
+            outline: none;
+            transition: border-color var(--transition);
+        }
+        #password-overlay input:focus {
+            border-color: var(--accent-gold);
+        }
+        #password-overlay .error-msg {
+            color: #e74c3c;
+            font-size: 13px;
+            min-height: 20px;
+        }
+        #password-overlay button {
+            background: var(--accent-gold);
+            color: #0A0A0A;
+            border: none;
+            padding: 10px 36px;
+            border-radius: var(--radius);
+            font-family: var(--font-family);
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        #password-overlay button:hover {
+            transform: scale(1.03);
+            box-shadow: var(--glow-gold);
+        }
+
+        /* ============================================================
+           INVESTOR GATE
+           ============================================================ */
+        #investor-gate {
+            position: fixed;
+            inset: 0;
+            z-index: 9997;
+            background: var(--modal-overlay);
+            backdrop-filter: blur(12px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
+        #investor-gate.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+        #investor-gate .gate-box {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 32px 36px;
+            max-width: 440px;
+            width: 100%;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+        #investor-gate .gate-box h2 {
+            font-family: var(--font-family);
+            font-weight: 800;
+            color: var(--accent-gold);
+            font-size: 22px;
+            margin-bottom: 6px;
+        }
+        #investor-gate .gate-box p {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-bottom: 14px;
+        }
+        #investor-gate .gate-box input {
+            width: 100%;
+            padding: 10px 16px;
+            background: var(--bg-input);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-family: var(--font-family);
+            font-size: 16px;
+            text-align: center;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            outline: none;
+            transition: border-color var(--transition);
+        }
+        #investor-gate .gate-box input:focus {
+            border-color: var(--accent-gold);
+        }
+        #investor-gate .gate-box .gate-error {
+            color: #e74c3c;
+            font-size: 13px;
+            min-height: 20px;
+        }
+        #investor-gate .gate-box button {
+            background: var(--accent-gold);
+            color: #0A0A0A;
+            border: none;
+            padding: 10px 28px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            width: 100%;
+        }
+        #investor-gate .gate-box button:hover {
+            transform: scale(1.02);
+            box-shadow: var(--glow-gold);
+        }
+        #investor-gate .gate-box .gate-divider {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 14px 0;
+            color: var(--text-muted);
+            font-size: 12px;
+        }
+        #investor-gate .gate-box .gate-divider hr {
+            flex: 1;
+            border: none;
+            border-top: 1px solid var(--border-color);
+        }
+        #investor-gate .gate-box .gate-questions textarea {
+            width: 100%;
+            padding: 8px 12px;
+            background: var(--bg-input);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-family: var(--font-family);
+            font-size: 14px;
+            resize: vertical;
+            min-height: 50px;
+            outline: none;
+            transition: border-color var(--transition);
+            margin-bottom: 8px;
+        }
+        #investor-gate .gate-box .gate-questions textarea:focus {
+            border-color: var(--accent-gold);
+        }
+
+        /* ============================================================
+           APP LAYOUT
+           ============================================================ */
+        .deck-app {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            height: 100dvh;
+            background: var(--bg-primary);
+            transition: background var(--transition);
+        }
+
+        /* ============================================================
+           HEADER
+           ============================================================ */
+        .deck-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 6px 14px;
+            background: var(--header-bg);
+            border-bottom: 1px solid var(--border-color);
+            flex-shrink: 0;
+            gap: 6px;
+            flex-wrap: wrap;
+            min-height: 48px;
+            z-index: 100;
+            transition: background var(--transition), border-color var(--transition);
+        }
+        .deck-header .brand {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-family: var(--font-family);
+            font-weight: 800;
+            font-size: 14px;
+            color: var(--accent-gold);
+            white-space: nowrap;
+        }
+        .deck-header .brand i {
+            font-size: 16px;
+        }
+        .deck-header .brand .brand-sub {
+            font-weight: 400;
+            font-size: 10px;
+            color: var(--text-secondary);
+            letter-spacing: 0.3px;
+        }
+        .deck-header .controls {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            flex-wrap: wrap;
+        }
+        .deck-header .controls button {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all var(--transition);
+            font-family: var(--font-family);
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: var(--bg-card);
+            white-space: nowrap;
+            min-height: 30px;
+        }
+        .deck-header .controls button:hover {
+            border-color: var(--accent-gold);
+            color: var(--accent-gold);
+            background: var(--accent-gold-dim);
+        }
+        .deck-header .controls button.active {
+            border-color: var(--accent-gold);
+            color: var(--accent-gold);
+            background: var(--accent-gold-dim);
+        }
+        .deck-header .controls .nav-btn {
+            padding: 4px 10px;
+            font-size: 14px;
+        }
+        .deck-header .slide-counter {
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-weight: 600;
+            padding: 0 6px;
+            font-variant-numeric: tabular-nums;
+            min-width: 44px;
+            text-align: center;
+        }
+
+        /* ============================================================
+           SLIDE CONTAINER
+           ============================================================ */
+        .slide-container {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+            background: var(--bg-primary);
+            transition: background var(--transition);
+        }
+        .slide-wrapper {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 24px 12px 24px;
+            opacity: 0;
+            transform: scale(0.96) translateY(12px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            pointer-events: none;
+            overflow-y: auto;
+        }
+        .slide-wrapper.active {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+            pointer-events: auto;
+            z-index: 10;
+        }
+        .slide-card {
+            width: 100%;
+            max-width: 1100px;
+            max-height: 100%;
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 28px 34px 16px 34px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow);
+            overflow-y: auto;
+            transition: background var(--transition), border-color var(--transition), box-shadow var(--transition);
+            display: flex;
+            flex-direction: column;
+        }
+        .slide-card.has-bg {
+            background-size: cover;
+            background-position: center;
+            background-blend-mode: overlay;
+            background-color: rgba(10, 10, 10, 0.7);
+        }
+        .light-theme .slide-card.has-bg {
+            background-color: rgba(248, 246, 240, 0.85);
+        }
+        .slide-card .slide-body {
+            flex: 1;
+        }
+
+        /* UNIFIED TYPOGRAPHY – title matches body font */
+        .slide-icon {
+            font-size: 32px;
+            color: var(--accent-gold);
+            margin-bottom: 6px;
+            display: block;
+        }
+        .slide-title {
+            font-family: var(--font-family);
+            font-weight: 800;
+            font-size: clamp(24px, 3.8vw, 40px);
+            line-height: 1.2;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+            letter-spacing: -0.01em;
+        }
+        .slide-title .highlight {
+            color: var(--accent-gold);
+        }
+        .slide-bullets {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .slide-bullets li {
+            font-family: var(--font-family);
+            font-size: 16px;
+            line-height: 1.5;
+            padding-left: 22px;
+            position: relative;
+            color: var(--text-primary);
+            font-weight: 400;
+        }
+        .slide-bullets li::before {
+            content: "◆";
+            position: absolute;
+            left: 0;
+            color: var(--accent-gold);
+            font-size: 12px;
+        }
+        [dir="rtl"] .slide-bullets li {
+            padding-left: 0;
+            padding-right: 22px;
+        }
+        [dir="rtl"] .slide-bullets li::before {
+            left: auto;
+            right: 0;
+        }
+        .slide-bullets li strong {
+            color: var(--accent-gold);
+            font-weight: 700;
+        }
+
+        .slide-media {
+            margin-top: 14px;
+            border-radius: 8px;
+            overflow: hidden;
+            background: var(--bg-secondary);
+            max-height: 220px;
+        }
+        .slide-media img,
+        .slide-media video {
+            width: 100%;
+            height: auto;
+            max-height: 220px;
+            object-fit: cover;
+            display: block;
+        }
+        .slide-media iframe {
+            width: 100%;
+            height: 170px;
+            border: none;
+            border-radius: 8px;
+        }
+
+        .chart-container {
+            margin-top: 14px;
+            padding: 8px;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            min-height: 90px;
+            position: relative;
+        }
+        .chart-container canvas {
+            width: 100% !important;
+            height: auto !important;
+            max-height: 170px;
+        }
+        .chart-fallback {
+            display: none;
+            padding: 8px;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+        .chart-fallback table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+        .chart-fallback th,
+        .chart-fallback td {
+            padding: 4px 10px;
+            border: 1px solid var(--border-color);
+            text-align: left;
+        }
+        .chart-fallback th {
+            background: var(--bg-card);
+            color: var(--accent-gold);
+            font-weight: 700;
+        }
+        .chart-error .chart-fallback {
+            display: block;
+        }
+        .chart-error canvas {
+            display: none;
+        }
+
+        /* FOOTER */
+        .slide-footer {
+            margin-top: 14px;
+            padding-top: 8px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 10px;
+            color: var(--footer-color);
+            font-family: var(--font-family);
+            letter-spacing: 0.3px;
+            flex-shrink: 0;
+        }
+        .slide-footer .footer-bisis {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .slide-footer .footer-bisis .bolt {
+            color: var(--accent-gold);
+            font-size: 12px;
+        }
+
+        /* ============================================================
+           PROGRESS BAR
+           ============================================================ */
+        .progress-bar {
+            height: 3px;
+            background: var(--progress-bg);
+            flex-shrink: 0;
+            transition: background var(--transition);
+            position: relative;
+        }
+        .progress-bar .fill {
+            height: 100%;
+            background: var(--progress-fill);
+            width: 0%;
+            transition: width 0.3s ease;
+            border-radius: 0 2px 2px 0;
+            position: relative;
+        }
+        .progress-bar .fill .timer-label {
+            position: absolute;
+            right: 4px;
+            top: -16px;
+            font-size: 10px;
+            color: var(--text-secondary);
+            font-weight: 600;
+            background: var(--bg-secondary);
+            padding: 0 6px;
+            border-radius: 4px;
+            opacity: 0.8;
+        }
+
+        /* ============================================================
+           THUMBNAILS
+           ============================================================ */
+        .thumbnails {
+            display: flex;
+            gap: 5px;
+            padding: 6px 14px;
+            overflow-x: auto;
+            flex-shrink: 0;
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            transition: all var(--transition);
+            max-height: 60px;
+            scroll-behavior: smooth;
+        }
+        .thumbnails.hidden {
+            max-height: 0;
+            padding: 0 14px;
+            border: none;
+            overflow: hidden;
+        }
+        .thumbnails .thumb {
+            flex: 0 0 50px;
+            height: 34px;
+            border-radius: 4px;
+            background: var(--bg-card);
+            border: 2px solid var(--thumb-border);
+            cursor: pointer;
+            transition: all var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 8px;
+            text-align: center;
+            padding: 2px 4px;
+            color: var(--text-secondary);
+            font-weight: 600;
+            overflow: hidden;
+            position: relative;
+            word-break: break-word;
+            line-height: 1.1;
+            font-family: var(--font-family);
+        }
+        .thumbnails .thumb.active {
+            border-color: var(--thumb-active);
+            box-shadow: var(--glow-gold);
+            color: var(--accent-gold);
+        }
+        .thumbnails .thumb .thumb-num {
+            position: absolute;
+            top: 1px;
+            right: 3px;
+            font-size: 7px;
+            color: var(--text-muted);
+        }
+        .thumbnails .thumb:hover {
+            border-color: var(--accent-gold);
+        }
+
+        /* ============================================================
+           PRESENTER NOTES – raised higher (top-right of screen)
+           ============================================================ */
+        .presenter-overlay {
+            position: fixed;
+            top: 70px;
+            right: 20px;
+            z-index: 999;
+            background: var(--bg-card);
+            border: 1px solid var(--accent-gold);
+            border-radius: var(--radius);
+            padding: 14px 20px;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: var(--shadow);
+            color: var(--text-primary);
+            font-size: 13px;
+            line-height: 1.6;
+            transition: all 0.4s ease;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(-12px) scale(0.96);
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+        .presenter-overlay.visible {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0) scale(1);
+        }
+        .presenter-overlay .notes-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--accent-gold);
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        .presenter-overlay .notes-content {
+            font-size: 13px;
+            font-family: var(--font-family);
+        }
+        .presenter-overlay .notes-content strong {
+            color: var(--accent-gold);
+        }
+
+        /* ============================================================
+           MODALS
+           ============================================================ */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 5000;
+            background: var(--modal-overlay);
+            backdrop-filter: blur(6px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .modal-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal-overlay .modal-box {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 24px 28px;
+            max-width: 640px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow);
+            transform: scale(0.95) translateY(12px);
+            transition: transform 0.3s ease;
+        }
+        .modal-overlay.open .modal-box {
+            transform: scale(1) translateY(0);
+        }
+        .modal-box h2 {
+            font-family: var(--font-family);
+            font-weight: 800;
+            font-size: 20px;
+            margin-bottom: 12px;
+            color: var(--accent-gold);
+        }
+        .modal-box label {
+            display: block;
+            margin-top: 8px;
+            font-weight: 600;
+            font-size: 12px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-family: var(--font-family);
+        }
+        .modal-box input,
+        .modal-box textarea,
+        .modal-box select {
+            width: 100%;
+            padding: 8px 12px;
+            margin-top: 3px;
+            background: var(--bg-input);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-primary);
+            font-family: var(--font-family);
+            font-size: 14px;
+            transition: border-color var(--transition);
+        }
+        .modal-box input:focus,
+        .modal-box textarea:focus,
+        .modal-box select:focus {
+            border-color: var(--accent-gold);
+            outline: none;
+        }
+        .modal-box textarea {
+            min-height: 50px;
+            resize: vertical;
+        }
+        .modal-box .modal-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 16px;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+        }
+        .modal-box .modal-actions button {
+            padding: 8px 18px;
+            border: none;
+            border-radius: 6px;
+            font-family: var(--font-family);
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all var(--transition);
+        }
+        .modal-box .modal-actions .btn-primary {
+            background: var(--accent-gold);
+            color: #0A0A0A;
+        }
+        .modal-box .modal-actions .btn-primary:hover {
+            transform: scale(1.03);
+            box-shadow: var(--glow-gold);
+        }
+        .modal-box .modal-actions .btn-secondary {
+            background: var(--bg-secondary);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+        }
+        .modal-box .modal-actions .btn-secondary:hover {
+            border-color: var(--accent-gold);
+            color: var(--accent-gold);
+        }
+        .modal-box .modal-actions .btn-danger {
+            background: #c0392b;
+            color: #fff;
+        }
+        .modal-box .modal-actions .btn-danger:hover {
+            background: #e74c3c;
+        }
+        .modal-box .modal-actions .btn-success {
+            background: #27ae60;
+            color: #fff;
+        }
+        .modal-box .modal-actions .btn-success:hover {
+            background: #2ecc71;
+        }
+
+        /* Icon grid */
+        .icon-grid {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 4px;
+            margin-top: 4px;
+            max-height: 100px;
+            overflow-y: auto;
+            padding: 4px;
+            background: var(--bg-secondary);
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+        }
+        .icon-grid .icon-option {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            color: var(--text-secondary);
+            transition: all var(--transition);
+            border: 2px solid transparent;
+            background: var(--bg-card);
+        }
+        .icon-grid .icon-option:hover {
+            border-color: var(--accent-gold);
+            color: var(--accent-gold);
+        }
+        .icon-grid .icon-option.selected {
+            border-color: var(--accent-gold);
+            color: var(--accent-gold);
+            background: var(--accent-gold-dim);
+        }
+
+        /* ============================================================
+           COLOR PICKER – raised: positioned as a prominent panel
+           ============================================================ */
+        .color-picker-panel {
+            position: fixed;
+            top: 60px;
+            right: 16px;
+            z-index: 999;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 16px 20px;
+            box-shadow: var(--shadow);
+            min-width: 200px;
+            display: none;
+            transition: all var(--transition);
+        }
+        .color-picker-panel.open {
+            display: block;
+            animation: slideDown 0.25s ease;
+        }
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .color-picker-panel .color-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-family: var(--font-family);
+        }
+        .color-picker-panel .color-row label {
+            min-width: 55px;
+            font-weight: 600;
+        }
+        .color-picker-panel .color-row input[type="color"] {
+            width: 28px;
+            height: 28px;
+            border: 2px solid var(--border-color);
+            border-radius: 4px;
+            cursor: pointer;
+            background: transparent;
+            padding: 2px;
+        }
+        .color-picker-panel .color-row input[type="color"]::-webkit-color-swatch-wrapper {
+            padding: 0;
+        }
+        .color-picker-panel .color-row input[type="color"]::-webkit-color-swatch {
+            border: none;
+            border-radius: 3px;
+        }
+        .color-picker-panel .cp-title {
+            font-weight: 700;
+            color: var(--accent-gold);
+            font-size: 13px;
+            margin-bottom: 8px;
+            display: block;
+            font-family: var(--font-family);
+        }
+        .color-picker-panel button {
+            margin-top: 6px;
+            width: 100%;
+            padding: 6px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 12px;
+            font-family: var(--font-family);
+            transition: all var(--transition);
+        }
+        .color-picker-panel button:hover {
+            border-color: var(--accent-gold);
+            color: var(--accent-gold);
+        }
+
+        /* ============================================================
+           USER GUIDE
+           ============================================================ */
+        .guide-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px 16px;
+            margin: 10px 0;
+            font-size: 13px;
+            font-family: var(--font-family);
+        }
+        .guide-grid .guide-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--text-secondary);
+        }
+        .guide-grid .guide-item kbd {
+            background: var(--bg-secondary);
+            padding: 1px 8px;
+            border-radius: 3px;
+            font-family: var(--font-family);
+            font-size: 11px;
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+        }
+        .guide-grid .guide-item .g-icon {
+            color: var(--accent-gold);
+            width: 20px;
+            text-align: center;
+        }
+
+        /* ============================================================
+           ANALYTICS PANEL
+           ============================================================ */
+        #analytics-panel {
+            position: fixed;
+            bottom: 80px;
+            right: 16px;
+            z-index: 999;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 14px 18px;
+            min-width: 200px;
+            max-width: 280px;
+            box-shadow: var(--shadow);
+            display: none;
+            max-height: 50vh;
+            overflow-y: auto;
+            font-size: 12px;
+            font-family: var(--font-family);
+        }
+        #analytics-panel.open {
+            display: block;
+        }
+        #analytics-panel h4 {
+            color: var(--accent-gold);
+            font-family: var(--font-family);
+            font-weight: 800;
+            font-size: 14px;
+            margin-bottom: 6px;
+        }
+        #analytics-panel .analytics-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 3px 0;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-secondary);
+        }
+        #analytics-panel .analytics-row .label {
+            color: var(--text-muted);
+        }
+        #analytics-panel .analytics-row .value {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+        #analytics-panel .analytics-close {
+            float: right;
+            cursor: pointer;
+            color: var(--text-muted);
+            font-size: 16px;
+        }
+        #analytics-panel .analytics-close:hover {
+            color: var(--text-primary);
+        }
+
+        /* ============================================================
+           MARKET INTELLIGENCE
+           ============================================================ */
+        .market-brief {
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 10px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            border-left: 3px solid var(--accent-gold);
+            font-family: var(--font-family);
+        }
+        .market-brief .brief-item {
+            display: flex;
+            gap: 8px;
+            padding: 3px 0;
+        }
+        .market-brief .brief-item .conf {
+            font-weight: 700;
+            font-size: 11px;
+            color: var(--accent-gold);
+            min-width: 45px;
+        }
+
+        /* ============================================================
+           RESPONSIVE
+           ============================================================ */
+        @media (max-width: 768px) {
+            .deck-header {
+                padding: 4px 10px;
+                gap: 4px;
+                min-height: 42px;
+            }
+            .deck-header .brand {
+                font-size: 12px;
+            }
+            .deck-header .brand .brand-sub {
+                font-size: 9px;
+            }
+            .deck-header .controls button {
+                padding: 3px 6px;
+                font-size: 11px;
+                min-height: 26px;
+            }
+            .deck-header .controls .nav-btn {
+                padding: 3px 8px;
+                font-size: 12px;
+            }
+            .slide-card {
+                padding: 18px 14px 12px 14px;
+            }
+            .slide-title {
+                font-size: 20px;
+            }
+            .slide-bullets li {
+                font-size: 14px;
+            }
+            .slide-wrapper {
+                padding: 8px 10px;
+            }
+            .thumbnails .thumb {
+                flex: 0 0 38px;
+                height: 28px;
+                font-size: 7px;
+            }
+            .modal-box {
+                padding: 16px 14px;
+            }
+            .guide-grid {
+                grid-template-columns: 1fr;
+            }
+            .presenter-overlay {
+                top: 60px;
+                right: 10px;
+                max-width: 300px;
+                padding: 10px 14px;
+                font-size: 12px;
+            }
+            .icon-grid {
+                grid-template-columns: repeat(6, 1fr);
+            }
+            .slide-media iframe {
+                height: 120px;
+            }
+            .color-picker-panel {
+                right: 8px;
+                min-width: 160px;
+                padding: 12px 14px;
+                top: 55px;
+            }
+            #analytics-panel {
+                right: 8px;
+                min-width: 150px;
+                font-size: 11px;
+                bottom: 70px;
+            }
+            .deck-header .slide-counter {
+                font-size: 10px;
+                min-width: 32px;
+            }
+            #investor-gate .gate-box {
+                padding: 20px 16px;
+            }
+            #splash-screen .splash-logo {
+                font-size: 32px;
+            }
+        }
+        @media (max-width: 480px) {
+            .slide-card {
+                padding: 12px 8px 10px 8px;
+                border-radius: 6px;
+            }
+            .slide-title {
+                font-size: 17px;
+            }
+            .slide-bullets li {
+                font-size: 13px;
+                padding-left: 18px;
+            }
+            [dir="rtl"] .slide-bullets li {
+                padding-right: 18px;
+            }
+            .slide-icon {
+                font-size: 22px;
+            }
+            .thumbnails .thumb {
+                flex: 0 0 30px;
+                height: 22px;
+                font-size: 6px;
+            }
+            .modal-box .modal-actions button {
+                padding: 5px 12px;
+                font-size: 12px;
+            }
+            .icon-grid {
+                grid-template-columns: repeat(5, 1fr);
+            }
+            .color-picker-panel {
+                min-width: 140px;
+                padding: 10px 12px;
+            }
+            .presenter-overlay {
+                max-width: 250px;
+                font-size: 11px;
+                padding: 8px 12px;
+            }
+        }
+
+        /* ============================================================
+           PRINT
+           ============================================================ */
+        @media print {
+            .deck-header,
+            .progress-bar,
+            .thumbnails,
+            .presenter-overlay,
+            .modal-overlay,
+            #password-overlay,
+            #investor-gate,
+            #splash-screen,
+            #analytics-panel,
+            .color-picker-panel,
+            .deck-controls-print-hide {
+                display: none !important;
+            }
+            .deck-app {
+                height: auto !important;
+                overflow: visible !important;
+                background: #fff !important;
+            }
+            .slide-container {
+                height: auto !important;
+                overflow: visible !important;
+                background: #fff !important;
+            }
+            .slide-wrapper {
+                position: relative !important;
+                opacity: 1 !important;
+                transform: none !important;
+                pointer-events: auto !important;
+                padding: 12px !important;
+                page-break-after: always;
+                display: block !important;
+                visibility: visible !important;
+                height: auto !important;
+            }
+            .slide-wrapper:not(.active) {
+                display: block !important;
+                opacity: 1 !important;
+                transform: none !important;
+            }
+            .slide-card {
+                box-shadow: none !important;
+                border: 1px solid #ddd !important;
+                background: #fff !important;
+                color: #000 !important;
+                max-height: none !important;
+                overflow: visible !important;
+                padding: 20px !important;
+            }
+            .slide-card.has-bg {
+                background-color: #fff !important;
+                background-image: none !important;
+            }
+            .slide-title {
+                color: #000 !important;
+            }
+            .slide-bullets li {
+                color: #000 !important;
+            }
+            .slide-bullets li::before {
+                color: #B8860B !important;
+            }
+            .slide-icon {
+                color: #B8860B !important;
+            }
+            .chart-container canvas {
+                max-height: 120px !important;
+            }
+            .chart-fallback {
+                display: table !important;
+            }
+            .chart-fallback table {
+                border-color: #ccc !important;
+            }
+            .chart-fallback th {
+                background: #f5f5f5 !important;
+                color: #B8860B !important;
+            }
+            .chart-fallback td {
+                color: #000 !important;
+            }
+            .slide-media img {
+                max-height: 140px !important;
+            }
+            .slide-media iframe {
+                height: 120px !important;
+            }
+            .slide-footer {
+                color: #999 !important;
+                border-top-color: #ddd !important;
+            }
+            .slide-footer .footer-bisis .bolt {
+                color: #B8860B !important;
+            }
+            :root.light-theme .slide-card {
+                background: #fff !important;
+                color: #000 !important;
+            }
+            :root.light-theme .slide-title {
+                color: #000 !important;
+            }
+            :root.light-theme .slide-bullets li {
+                color: #000 !important;
+            }
+            .presenter-overlay {
+                display: none !important;
+            }
+        }
+
+        /* ============================================================
+           UTILITIES
+           ============================================================ */
+        .text-gold {
+            color: var(--accent-gold);
+        }
+        .mt-8 {
+            margin-top: 8px;
+        }
+        .mt-16 {
+            margin-top: 16px;
+        }
+        .gap-8 {
+            gap: 8px;
+        }
+        .flex {
+            display: flex;
+        }
+        .flex-center {
+            align-items: center;
+            justify-content: center;
+        }
+        .w-full {
+            width: 100%;
+        }
+        .relative {
+            position: relative;
+        }
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== SPLASH SCREEN ===== -->
+    <div id="splash-screen">
+        <div class="splash-logo">⚡ BİŞİŞ</div>
+        <div class="splash-sub">Sovereign Data Spire</div>
+        <div class="splash-spinner"></div>
+    </div>
+
+    <!-- ===== PASSWORD OVERLAY ===== -->
+    <div id="password-overlay" class="hidden">
+        <div class="lock-icon"><i class="fas fa-lock"></i></div>
+        <h2 data-i18n="password_title">🔐 Secure Deck</h2>
+        <p data-i18n="password_desc">Enter the password to access this presentation.</p>
+        <input type="password" id="password-input" placeholder="••••••••" autofocus />
+        <div class="error-msg" id="password-error"></div>
+        <button id="password-submit" data-i18n="password_unlock">Unlock</button>
+    </div>
+
+    <!-- ===== INVESTOR GATE ===== -->
+    <div id="investor-gate" class="hidden">
+        <div class="gate-box">
+            <h2>⚡ BİŞİŞ</h2>
+            <p data-i18n="gate_title">Exclusive Investor Access</p>
+            <p style="font-size:13px;color:var(--text-muted);" data-i18n="gate_desc">Enter your invitation code or complete the brief questionnaire.</p>
+            <input type="text" id="gate-code" placeholder="Invitation Code" autofocus />
+            <div class="gate-error" id="gate-error"></div>
+            <button id="gate-submit" data-i18n="gate_enter">Enter</button>
+            <div class="gate-divider"><hr /><span>or</span><hr /></div>
+            <div class="gate-questions">
+                <label style="font-size:12px;text-transform:none;color:var(--text-secondary);font-weight:400;" data-i18n="gate_q1">1. What is your primary investment focus?</label>
+                <textarea id="gate-q1" rows="2" placeholder="e.g., infrastructure, AI, sustainability..."></textarea>
+                <label style="font-size:12px;text-transform:none;color:var(--text-secondary);font-weight:400;margin-top:6px;" data-i18n="gate_q2">2. What is your investment horizon?</label>
+                <textarea id="gate-q2" rows="2" placeholder="e.g., 3-5 years, 5-10 years..."></textarea>
+                <button id="gate-submit-questions" style="margin-top:8px;background:var(--bg-secondary);color:var(--text-primary);border:1px solid var(--border-color);padding:10px;border-radius:6px;cursor:pointer;width:100%;font-weight:600;font-family:var(--font-family);" data-i18n="gate_submit">Submit & Access</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== APP ===== -->
+    <div class="deck-app" id="app">
+
+        <!-- HEADER -->
+        <header class="deck-header">
+            <div class="brand">
+                <i class="fas fa-tower-broadcast"></i>
+                <span>SDS</span>
+                <span class="brand-sub">Sovereign Data Spire</span>
+            </div>
+            <div class="controls">
+                <button class="nav-btn" id="nav-prev" title="Previous (←)"><i class="fas fa-chevron-left"></i></button>
+                <button class="nav-btn" id="nav-next" title="Next (→)"><i class="fas fa-chevron-right"></i></button>
+                <span class="slide-counter" id="slide-counter">1 / 15</span>
+                <button id="theme-toggle" title="Toggle Theme (Dark/Light)"><i class="fas fa-moon"></i></button>
+                <button id="lang-toggle" title="Toggle Language"><i class="fas fa-globe"></i> <span id="lang-label">EN</span></button>
+                <button id="color-picker-toggle" title="Custom Colors"><i class="fas fa-palette"></i></button>
+                <button id="fullscreen-toggle" title="Fullscreen (F)"><i class="fas fa-expand"></i></button>
+                <button id="presenter-toggle" title="Presenter Notes (P)"><i class="fas fa-clipboard-list"></i></button>
+                <button id="thumb-toggle" title="Thumbnails (H)"><i class="fas fa-th-large"></i></button>
+                <button id="autopilot-toggle" title="Auto-Pilot"><i class="fas fa-play"></i></button>
+                <button id="more-menu-toggle" title="More"><i class="fas fa-ellipsis-v"></i></button>
+            </div>
+        </header>
+
+        <!-- PROGRESS BAR -->
+        <div class="progress-bar" id="progress-bar">
+            <div class="fill" id="progress-fill">
+                <span class="timer-label" id="timer-label"></span>
+            </div>
+        </div>
+
+        <!-- SLIDE CONTAINER -->
+        <div class="slide-container" id="slide-container"></div>
+
+        <!-- THUMBNAILS -->
+        <div class="thumbnails" id="thumbnails"></div>
+
+        <!-- PRESENTER NOTES (raised – top-right) -->
+        <div class="presenter-overlay" id="presenter-overlay">
+            <div class="notes-label">📝 Speaker Notes</div>
+            <div class="notes-content" id="presenter-notes-content"></div>
+        </div>
+
+        <!-- COLOR PICKER (raised – prominent panel) -->
+        <div class="color-picker-panel" id="color-picker-panel">
+            <span class="cp-title">🎨 Custom Colors</span>
+            <div class="color-row"><label>Bg</label><input type="color" id="cp-bg" value="#0A0A0A" /></div>
+            <div class="color-row"><label>Card</label><input type="color" id="cp-card" value="#1A1A1A" /></div>
+            <div class="color-row"><label>Text</label><input type="color" id="cp-text" value="#EAEAEA" /></div>
+            <div class="color-row"><label>Gold</label><input type="color" id="cp-gold" value="#D4AF37" /></div>
+            <div class="color-row"><label>Copper</label><input type="color" id="cp-copper" value="#B87333" /></div>
+            <div class="color-row"><label>Border</label><input type="color" id="cp-border" value="#2A2A2A" /></div>
+            <button id="reset-colors-btn"><i class="fas fa-undo"></i> Reset Colors</button>
+        </div>
+
+        <!-- ===== MODALS ===== -->
+
+        <!-- Edit Slide Modal -->
+        <div class="modal-overlay" id="edit-modal">
+            <div class="modal-box">
+                <h2 id="edit-modal-title">Edit Slide</h2>
+                <input type="hidden" id="edit-slide-id" />
+                <label>Icon</label>
+                <input type="text" id="edit-icon" placeholder="fa-chart-line" style="margin-bottom:4px;" />
+                <div class="icon-grid" id="icon-grid"></div>
+                <label>Title (English)</label>
+                <input type="text" id="edit-title-en" placeholder="Title in English" />
+                <label>Title (Arabic)</label>
+                <input type="text" id="edit-title-ar" placeholder="العنوان بالعربية" />
+                <label>Bullets (English) – one per line</label>
+                <textarea id="edit-bullets-en" placeholder="Bullet 1&#10;Bullet 2"></textarea>
+                <label>Bullets (Arabic) – one per line</label>
+                <textarea id="edit-bullets-ar" placeholder="نقطة 1&#10;نقطة 2"></textarea>
+                <label>Image URL</label>
+                <input type="text" id="edit-image" placeholder="https://..." />
+                <label>Background Image URL</label>
+                <input type="text" id="edit-bgimage" placeholder="https://..." />
+                <label>Video URL (YouTube embed)</label>
+                <input type="text" id="edit-video" placeholder="https://www.youtube.com/embed/..." />
+                <label>Chart Data (JSON) – e.g. {"type":"bar","labels":["Q1","Q2"],"values":[10,20]}</label>
+                <input type="text" id="edit-chart" placeholder='{"type":"bar","labels":["Q1","Q2"],"values":[10,20]}' />
+                <label>Speaker Notes (HTML supported)</label>
+                <textarea id="edit-notes" placeholder="Notes for presenter..."></textarea>
+                <div class="modal-actions">
+                    <button class="btn-secondary" id="edit-modal-close">Cancel</button>
+                    <button class="btn-success" id="edit-modal-duplicate" style="display:none;">Duplicate</button>
+                    <button class="btn-danger" id="edit-modal-delete" style="display:none;">Delete</button>
+                    <button class="btn-primary" id="edit-modal-save">Save</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- User Guide Modal -->
+        <div class="modal-overlay" id="guide-modal">
+            <div class="modal-box">
+                <h2><i class="fas fa-question-circle" style="color:var(--accent-gold);"></i> <span data-i18n="guide_title">User Guide</span></h2>
+                <div class="guide-grid">
+                    <div class="guide-item"><span class="g-icon">◀ ▶</span> <span data-i18n="guide_nav">Navigate</span> <kbd>←</kbd> <kbd>→</kbd></div>
+                    <div class="guide-item"><span class="g-icon">⛶</span> <span data-i18n="guide_fullscreen">Fullscreen</span> <kbd>F</kbd></div>
+                    <div class="guide-item"><span class="g-icon">📝</span> <span data-i18n="guide_presenter">Presenter notes</span> <kbd>P</kbd></div>
+                    <div class="guide-item"><span class="g-icon">⊞</span> <span data-i18n="guide_thumbs">Toggle thumbs</span> <kbd>H</kbd></div>
+                    <div class="guide-item"><span class="g-icon">▶</span> <span data-i18n="guide_autopilot">Auto-Pilot</span></div>
+                    <div class="guide-item"><span class="g-icon">🌐</span> <span data-i18n="guide_lang">Switch language</span></div>
+                    <div class="guide-item"><span class="g-icon">🎨</span> <span data-i18n="guide_colors">Custom colors</span></div>
+                    <div class="guide-item"><span class="g-icon">📂</span> <span data-i18n="guide_import">Import/Export</span></div>
+                    <div class="guide-item"><span class="g-icon">➕</span> <span data-i18n="guide_add">Add/Edit/Delete</span></div>
+                    <div class="guide-item"><span class="g-icon">🔄</span> <span data-i18n="guide_reset">Reset</span> <kbd>R</kbd></div>
+                    <div class="guide-item"><span class="g-icon">📊</span> <span data-i18n="guide_analytics">Analytics</span> <kbd>A</kbd></div>
+                </div>
+                <div class="modal-actions">
+                    <button class="btn-primary" id="guide-modal-close">Close</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Import/Export Modal -->
+        <div class="modal-overlay" id="import-modal">
+            <div class="modal-box">
+                <h2><i class="fas fa-file-import" style="color:var(--accent-gold);"></i> <span data-i18n="import_title">Import / Export</span></h2>
+                <div style="display:flex;flex-direction:column;gap:8px;margin:12px 0;">
+                    <button id="export-data-btn" class="btn-primary" style="padding:10px;border:none;border-radius:6px;font-weight:600;cursor:pointer;background:var(--accent-gold);color:#0A0A0A;font-family:var(--font-family);"><i class="fas fa-download"></i> <span data-i18n="export_btn">Export JSON</span></button>
+                    <label style="display:block;padding:10px;border:2px dashed var(--border-color);border-radius:6px;text-align:center;cursor:pointer;transition:border-color var(--transition);font-family:var(--font-family);font-size:13px;color:var(--text-secondary);">
+                        <i class="fas fa-upload" style="color:var(--accent-gold);font-size:20px;"></i>
+                        <span style="display:block;margin-top:4px;" data-i18n="import_btn">Upload JSON to import</span>
+                        <input type="file" id="import-file-input" accept=".json" style="display:none;" />
+                    </label>
+                    <div id="import-status" style="font-size:13px;color:var(--text-secondary);min-height:18px;"></div>
+                </div>
+                <div class="modal-actions">
+                    <button class="btn-secondary" id="import-modal-close">Close</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- More Menu Modal (three dots) -->
+        <div class="modal-overlay" id="more-modal">
+            <div class="modal-box" style="max-width:400px;">
+                <h2><i class="fas fa-cog" style="color:var(--accent-gold);"></i> <span data-i18n="more_title">More</span></h2>
+                <div style="display:flex;flex-direction:column;gap:5px;margin:10px 0;">
+                    <button id="more-add-slide" class="btn-primary" style="padding:10px;border:none;border-radius:6px;font-weight:600;cursor:pointer;background:var(--accent-gold);color:#0A0A0A;font-family:var(--font-family);"><i class="fas fa-plus"></i> <span data-i18n="more_add">Add Slide</span></button>
+                    <button id="more-edit-slide" style="padding:10px;border:1px solid var(--border-color);border-radius:6px;background:transparent;color:var(--text-primary);cursor:pointer;font-family:var(--font-family);"><i class="fas fa-pen"></i> <span data-i18n="more_edit">Edit Current</span></button>
+                    <button id="more-import-export" style="padding:10px;border:1px solid var(--border-color);border-radius:6px;background:transparent;color:var(--text-primary);cursor:pointer;font-family:var(--font-family);"><i class="fas fa-file-import"></i> <span data-i18n="more_importexport">Import/Export</span></button>
+                    <button id="more-user-guide" style="padding:10px;border:1px solid var(--border-color);border-radius:6px;background:transparent;color:var(--text-primary);cursor:pointer;font-family:var(--font-family);"><i class="fas fa-question-circle"></i> <span data-i18n="more_guide">User Guide</span></button>
+                    <button id="more-analytics" style="padding:10px;border:1px solid var(--border-color);border-radius:6px;background:transparent;color:var(--text-primary);cursor:pointer;font-family:var(--font-family);"><i class="fas fa-chart-bar"></i> <span data-i18n="more_analytics">Analytics</span></button>
+                    <button id="more-market-intel" style="padding:10px;border:1px solid var(--border-color);border-radius:6px;background:transparent;color:var(--text-primary);cursor:pointer;font-family:var(--font-family);"><i class="fas fa-brain"></i> <span data-i18n="more_market">Market Intel</span></button>
+                    <button id="more-followup" style="padding:10px;border:1px solid var(--border-color);border-radius:6px;background:transparent;color:var(--text-primary);cursor:pointer;font-family:var(--font-family);"><i class="fas fa-envelope"></i> <span data-i18n="more_followup">AI Follow-up</span></button>
+                    <button id="more-reset" style="padding:10px;border:1px solid #c0392b;border-radius:6px;background:transparent;color:#c0392b;cursor:pointer;font-family:var(--font-family);"><i class="fas fa-undo"></i> <span data-i18n="more_reset">Reset to Default</span></button>
+                </div>
+                <div class="modal-actions">
+                    <button class="btn-secondary" id="more-modal-close">Close</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Market Intelligence Modal -->
+        <div class="modal-overlay" id="market-modal">
+            <div class="modal-box">
+                <h2><i class="fas fa-brain" style="color:var(--accent-gold);"></i> <span data-i18n="market_title">Market Intelligence</span></h2>
+                <label data-i18n="market_paste">Paste market report or data:</label>
+                <textarea id="market-input" rows="4" placeholder="Paste your market research, reports, or data here..."></textarea>
+                <button id="market-analyze" class="btn-primary" style="margin-top:10px;padding:10px;border:none;border-radius:6px;font-weight:600;cursor:pointer;background:var(--accent-gold);color:#0A0A0A;width:100%;font-family:var(--font-family);"><i class="fas fa-microchip"></i> <span data-i18n="market_analyze">Analyze & Generate Brief</span></button>
+                <div id="market-brief-output" class="market-brief" style="display:none;"></div>
+                <div class="modal-actions">
+                    <button class="btn-secondary" id="market-modal-close">Close</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI Follow-up Modal -->
+        <div class="modal-overlay" id="followup-modal">
+            <div class="modal-box">
+                <h2><i class="fas fa-envelope" style="color:var(--accent-gold);"></i> <span data-i18n="followup_title">AI Follow-up Sequence</span></h2>
+                <p style="font-size:13px;color:var(--text-secondary);margin-bottom:10px;font-family:var(--font-family);" data-i18n="followup_desc">Generate a professional thank-you email with a meeting request.</p>
+                <div style="background:var(--bg-secondary);padding:12px;border-radius:6px;font-size:13px;color:var(--text-secondary);max-height:200px;overflow-y:auto;white-space:pre-wrap;font-family:var(--font-family);" id="followup-email"></div>
+                <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;">
+                    <a id="followup-mailto" class="btn-primary" style="padding:10px 18px;border:none;border-radius:6px;font-weight:600;cursor:pointer;background:var(--accent-gold);color:#0A0A0A;text-decoration:none;display:inline-flex;align-items:center;gap:6px;font-family:var(--font-family);"><i class="fas fa-envelope"></i> <span data-i18n="followup_send">Send Email</span></a>
+                    <button id="followup-copy" class="btn-secondary" style="padding:10px 18px;border:1px solid var(--border-color);border-radius:6px;background:transparent;color:var(--text-secondary);cursor:pointer;font-family:var(--font-family);"><i class="fas fa-copy"></i> <span data-i18n="followup_copy">Copy</span></button>
+                </div>
+                <div class="modal-actions">
+                    <button class="btn-secondary" id="followup-modal-close">Close</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analytics Panel (floating) -->
+        <div id="analytics-panel">
+            <span class="analytics-close" id="analytics-close">&times;</span>
+            <h4>📊 Engagement Analytics</h4>
+            <div id="analytics-content"></div>
+        </div>
+
+    </div>
+
+    <!-- ============================================================
+    JAVASCRIPT – COMPLETE APPLICATION WITH TELEGRAM NOTIFICATIONS
+    ============================================================ -->
+    <script>
+        // ============================================================
+        // CONFIGURATION – TELEGRAM NOTIFICATIONS (PRE‑FILLED)
+        // ============================================================
+        // ✅ Your Telegram Bot Token and Chat ID are already set up!
+        // No need to edit anything – just save and open the file.
+        // ============================================================
+        const TELEGRAM_BOT_TOKEN = "8956127069:AAGFRDcYhz0j5zvBPrOxz4LueJZsIbsBoM0";
+        const TELEGRAM_CHAT_ID = "8183189899";
+        const TELEGRAM_NOTIFICATIONS_ENABLED = true;
+
+        // ============================================================
+        // OTHER CONFIGURATION
+        // ============================================================
+        const DECK_PASSWORD = ""; // Set to "" for no password
+        const AUTO_PILOT_DELAY = 30;
+        const INVESTOR_GATE_ENABLED = true;
+        const INVITATION_CODE = "BISIS2026";
+
+        // ============================================================
+        // DEFAULT SLIDES (15 slides – Sovereign Data Spire)
+        // ============================================================
+        const DEFAULT_SLIDES = [{
+            id: 1,
+            icon: 'fa-tower-broadcast',
+            titleAr: 'المرصد السحابي للسيادة الرقمية',
+            titleEn: 'Sovereign Data Spire',
+            bulletsAr: ['إعادة تعريف مراكز البيانات كأبراج سيادية', 'حماية الأصول الرقمية والذكاء الاصطناعي السيادي',
+                'معمارية Future-Noir تجمع بين الحصانة والأناقة'
+            ],
+            bulletsEn: ['Redefining data centers as Sovereign Spires', 'Protecting digital assets and sovereign AI',
+                'Future-Noir architecture merging immunity & elegance'
+            ],
+            image: '',
+            bgImage: '',
+            videoUrl: '',
+            chartData: null,
+            notes: '<strong>Opening slide</strong> – introduce the bold concept of Sovereign Data Spire.'
+        }, {
+            id: 2,
+            icon: 'fa-eye',
+            titleAr: 'الرؤية',
+            titleEn: 'The Vision',
+            bulletsAr: ['منصة معمارية-تقنية لحماية السيادة الرقمية', 'تحويل مراكز البيانات إلى معاقل استراتيجية',
+                'تمكين الدول والشركات من استقلالية بياناتها'
+            ],
+            bulletsEn: ['An architectural-tech platform for digital sovereignty', 'Transforming data centers into strategic strongholds',
+                'Enabling nations and enterprises to own their data'
+            ],
+            image: '',
+            bgImage: '',
+            videoUrl: '',
+            chartData: null,
+            notes: 'Strategic vision: why digital sovereignty is vital today.'
+        }, {
+            id: 3,
+            icon: 'fa-exclamation-triangle',
+            titleAr: 'التحدي',
+            titleEn: 'The Challenge',
+            bulletsAr: ['مراكز البيانات التقليدية غير آمنة وسطياً', 'الاعتماد على السحابة العامة يهدد السيادة',
+                'ارتفاع استهلاك الطاقة وانبعاثات الكربون'
+            ],
+            bulletsEn: ['Traditional data centers are geopolitically vulnerable', 'Public cloud dependency threatens sovereignty',
+                'High energy consumption and carbon emissions'
+            ],
+            image: '',
+            bgImage: '',
+            videoUrl: '',
+            chartData: null,
+            notes: 'Identifying the gap that the project fills.'
+        }, {
+            id: 4,
+            icon: 'fa-lightbulb',
+            titleAr: 'الحل',
+            titleEn: 'The Solution',
+            bulletsAr: ['أبراج سيادية متكاملة بتقنيات الجيل القادم', 'تبريد ذاتي بالهيدروجين الأخضر',
+                'استقلالية طاقية 100% واستدامة بيئية'
+            ],
+            bulletsEn: ['Integrated Sovereign Spires with next-gen tech', 'Self-cooling with green hydrogen',
+                '100% energy independence & environmental sustainability'
+            ],
+            image: '',
+            bgImage: '',
+            videoUrl: '',
+            chartData: null,
+            notes: 'Presenting the integrated solution and its unique features.'
+        }, {
+            id: 5,
+            icon: 'fa-cubes',
+            titleAr: 'نظرة عامة على المعمارية',
+            titleEn: 'Architectural Overview',
+            bulletsAr: ['تصميم هرمي متعدد الطبقات (Sovereign Stack)', 'طبقة الحماية السيبرانية البيولوجية',
+                'تكامل خلايا الوقود المتقدمة مع أنظمة التبريد'
+            ],
+            bulletsEn: ['Multi-layered hierarchical design (Sovereign Stack)', 'Bio-cyber protection layer',
+                'Integration of advanced fuel cells with cooling systems'
+            ],
+            image: '',
+            bgImage: '',
+            videoUrl: '',
+            chartData: null,
+            notes: 'Explaining the architecture in accessible language.'
+        }, {
+            id: 6,
+            icon: 'fa-list-check',
+            titleAr: 'الميزات الرئيسية',
+            titleEn: 'Key Features',
+            bulletsAr: ['🔒 أمان بيولوجي رقمي يتجاوز المعايير العسكرية', '🌱 تبريد بالهيدروجين الأخضر صافي الصفر',
+                '⚡ استقلالية طاقية كاملة', '🛡️ حماية الذكاء الاصطناعي السيادي'
+            ],
+            bulletsEn: ['🔒 Bio-digital security exceeding military standards', '🌱 Zero-emission green hydrogen cooling',
+                '⚡ Full energy independence', '🛡️ Sovereign AI protection'
+            ],
+            image: '',
+            bgImage: '',
+            videoUrl: '',
+            chartData: null,
+            notes: 'Detailed competitive features.'
+        }, {
+            id: 7,
+            icon: 'fa-water',
+            titleAr: 'التبريد بالهيدروجين الأخضر',
+            titleEn: 'Green Hydrogen Cooling',
+            bulletsAr: ['نظام تبريد ذاتي يعمل بالهيدروجين الأخضر', 'انبعاثات صفرية وكفاءة حرارية فائقة',
+                'تكامل مع خلايا الوقود لتوليد الطاقة'
+            ],
+            bulletsEn: ['Self-cooling system powered by green hydrogen', 'Zero emissions and superior thermal efficiency',
+                'Integration with fuel cells for energy generation'
+            ],
+            image: '',
+            bgImage: '',
+            videoUrl: '',
+            chartData: { type: 'bar', labels: ['2024', '2025', '2026', '2027'], values: [15, 30, 55, 80] },
+            notes: 'Highlighting the environmental innovation and cost savings.'
+        }, {
+            id: 8,
+            icon: 'fa-shield-halved',
+            titleAr: 'حماية الذكاء الاصطناعي السيادي',
+            titleEn: 'Sovereign AI Protection',
+            bulletsAr: ['بنية تحتية مخصصة لتشغيل نماذج AI محلية', 'عزل بيانات التدريب عن السحابة العامة',
+                'الامتثال الكامل للوائح السيادة الرقمية'
+            ],
+            bulletsEn: ['Dedicated infrastructure for local AI models', 'Isolation of training data from public cloud',
+                'Full compliance with digital sovereignty regulations'
+            ],
+            image: '',
+            bgImage: '',
+            videoUrl: '',
+            chartData: null,
+            notes: 'How the project protects national AI.'
+        }, {
+            id: 9,
+            icon: 'fa-bolt',
+            titleAr: 'استقلالية الطاقة',
+            titleEn: 'Energy Independence',
+            bulletsAr: ['تكامل خلايا الوقود المتقدمة مع الشبكة الذكية', 'اكتفاء ذاتي بنسبة 100% من الطاقة النظيفة',
+                'تخزين فائض الطاقة في نظام هيدروجين احتياطي'
+            ],
+            bulletsEn: ['Integration of advanced fuel cells with smart grid', '100% self-sufficiency from clean energy',
+                'Surplus energy storage in reserve hydrogen system'
+            ],
+            image: '',
+            bgImage: '',
+            videoUrl: '',
+            chartData: { type: 'doughnut', labels: ['Hydrogen', 'Solar', 'Grid Backup'], values: [65, 25, 10] },
+            notes: 'Explaining the sustainable energy model.'
+        }, {
+            id: 10,
+            icon: 'fa-chart-pie',
+            titleAr: 'فرصة الاستثمار',
+            titleEn: 'Investment Opportunity',
+            bulletsAr: ['سوق مراكز البيانات السيادية ينمو بـ 28% سنوياً', 'عائد استثمار متوقع 4.5x خلال 5 سنوات',
+                'جذب صناديق الثروة السيادية والشركات العابرة للحدود'
+            ],
+            bulletsEn: ['Sovereign data center market growing at 28% YoY', 'Projected ROI of 4.5x over 5 years',
+                'Attracting Sovereign Wealth Funds and multinationals'
+            ],
+            image: '',
+            bgImage: '',
+            videoUrl: '',
+            chartData: { type: 'line', labels: ['2024', '2025', '2026', '2027', '2028'], values: [1.2, 2.4, 4.1, 6.8,
+                    10.5
+                ] },
+            notes: 'Financial overview: numbers and projections.'
+        }, {
+            id: 11,
+            icon: 'fa-medal',
+            titleAr: 'الميزة التنافسية',
+            titleEn: 'Competitive Advantage',
+            bulletsAr: ['أول منصة تجمع بين السيادة الرقمية والاستدامة الكاملة', 'تقنية تبريد حاصلة على براءة اختراع',
+                'شراكات استراتيجية مع حكومات وشركات طاقة'
+            ],
+            bulletsEn: ['First platform combining digital sovereignty with full sustainability', 'Patented cooling technology',
+                'Strategic partnerships with governments and energy companies'
+            ],
+            image: '',
+            bgImage: '',
+            videoUrl: '',
+            chartData: null,
+            notes: 'Our edge over competitors.'
+        }, {
+            id: 12,
+            icon: 'fa-leaf',
+            titleAr: 'الأثر الاستدامي',
+            titleEn: 'Sustainability Impact',
+            bulletsAr: ['خفض البصمة الكربونية بنسبة 92% مقارنة بالمراكز التقليدية', 'الوصول إلى صافي صفر بحلول 2030',
+                'نموذج يحتذى به للبنية التحتية الرقمية الخضراء'
+            ],
+            bulletsEn: ['92% reduction in carbon footprint vs. traditional centers', 'Achieving net-zero by 2030',
+                'A benchmark for green digital infrastructure'
+            ],
+            image: '',
+            bgImage: '',
+            videoUrl: '',
+            chartData: { type: 'bar', labels: ['Traditional', 'SDS'], values: [100, 8] },
+            notes: 'Positive environmental impact.'
+        }, {
+            id: 13,
+            icon: 'fa-paintbrush',
+            titleAr: 'الفلسفة البصرية',
+            titleEn: 'Brand Vision & Philosophy',
+            bulletsAr: ['جمالية Future-Noir: الأوبسيديان، الذهبي، والنحاسي',
+                'تجربة مستخدم توحي بالحصانة والقوة المطلقة', 'نسختان: غرفة تحكم (سوداء) ومكتب تصميم (بيضاء)'
+            ],
+            bulletsEn: ['Future-Noir aesthetic: Obsidian, Gold, Copper', 'User experience conveying immunity and absolute power',
+                'Two modes: Control Room (dark) & Design Studio (light)'
+            ],
+            image: '',
+            bgImage: '',
+            videoUrl: '',
+            chartData: null,
+            notes: 'Visual identity and design philosophy.'
+        }, {
+            id: 14,
+            icon: 'fa-timeline',
+            titleAr: 'الجدول الزمني',
+            titleEn: 'Project Timeline',
+            bulletsAr: ['Q1 2026: إطلاق النسخة التجريبية الأولى', 'Q3 2026: التشغيل الكامل لأول برج سيادي',
+                'Q1 2027: التوسع الإقليمي وجولة تمويل B'
+            ],
+            bulletsEn: ['Q1 2026: First pilot launch', 'Q3 2026: Full operation of first Sovereign Spire',
+                'Q1 2027: Regional expansion & Series B funding'
+            ],
+            image: '',
+            bgImage: '',
+            videoUrl: '',
+            chartData: null,
+            notes: 'Implementation timeline.'
+        }, {
+            id: 15,
+            icon: 'fa-handshake',
+            titleAr: 'دعوة للاستثمار',
+            titleEn: 'Call to Action',
+            bulletsAr: ['انضم إلينا في بناء مستقبل السيادة الرقمية', 'استثمر في البنية التحتية للجيل القادم',
+                'تواصل مع فريقنا اليوم لبدء الحوار'
+            ],
+            bulletsEn: ['Join us in building the future of digital sovereignty', 'Invest in next-generation infrastructure',
+                'Contact our team today to start the conversation'
+            ],
+            image: '',
+            bgImage: '',
+            videoUrl: '',
+            chartData: null,
+            notes: 'Closing: a clear call to action.'
+        }];
+
+        // ============================================================
+        // STATE
+        // ============================================================
+        let slidesData = [];
+        let currentSlideIndex = 0;
+        let currentLanguage = 'en';
+        let isDarkTheme = true;
+        let isFullscreen = false;
+        let isPresenterVisible = false;
+        let isThumbsVisible = true;
+        let isAutoPilot = false;
+        let autoPilotTimer = null;
+        let autoPilotCountdown = null;
+        let chartInstances = [];
+        let currentChartIndex = -1;
+        let slideStartTimes = {};
+        let totalStartTime = Date.now();
+        let analyticsData = { slideTimes: {}, totalTime: 0, dropOffs: [] };
+        let editSlideId = null;
+        let marketModal, followupModal;
+
+        // ============================================================
+        // DOM REFS
+        // ============================================================
+        const $ = (sel, ctx = document) => ctx.querySelector(sel);
+        const $$ = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
+
+        const container = $('#slide-container');
+        const thumbnails = $('#thumbnails');
+        const progressFill = $('#progress-fill');
+        const timerLabel = $('#timer-label');
+        const slideCounter = $('#slide-counter');
+        const presenterOverlay = $('#presenter-overlay');
+        const presenterNotesContent = $('#presenter-notes-content');
+        const langLabel = $('#lang-label');
+
+        // ============================================================
+        // I18N
+        // ============================================================
+        const UI_LABELS = {
+            en: {
+                password_title: '🔐 Secure Deck',
+                password_desc: 'Enter the password to access this presentation.',
+                password_unlock: 'Unlock',
+                gate_title: 'Exclusive Investor Access',
+                gate_desc: 'Enter your invitation code or complete the brief questionnaire.',
+                gate_enter: 'Enter',
+                gate_q1: '1. What is your primary investment focus?',
+                gate_q2: '2. What is your investment horizon?',
+                gate_submit: 'Submit & Access',
+                guide_title: 'User Guide',
+                guide_nav: 'Navigate slides',
+                guide_fullscreen: 'Fullscreen',
+                guide_presenter: 'Presenter notes',
+                guide_thumbs: 'Toggle thumbnails',
+                guide_autopilot: 'Auto-Pilot slideshow',
+                guide_lang: 'Switch language',
+                guide_colors: 'Custom colors',
+                guide_import: 'Import/Export deck data',
+                guide_add: 'Add/Edit/Delete slides',
+                guide_reset: 'Reset to default',
+                guide_analytics: 'Analytics dashboard',
+                import_title: 'Import / Export Data',
+                export_btn: 'Export Deck Data (JSON)',
+                import_btn: 'Upload JSON file to import',
+                more_title: 'More Options',
+                more_add: 'Add New Slide',
+                more_edit: 'Edit Current Slide',
+                more_importexport: 'Import / Export',
+                more_guide: 'User Guide',
+                more_analytics: 'Analytics',
+                more_market: 'Market Intelligence',
+                more_followup: 'AI Follow-up',
+                more_reset: 'Reset to Default',
+                market_title: 'Market Intelligence',
+                market_paste: 'Paste market report or data:',
+                market_analyze: 'Analyze & Generate Brief',
+                followup_title: 'AI Follow-up Sequence',
+                followup_desc: 'Generate a professional thank-you email with a meeting request.',
+                followup_send: 'Send Email',
+                followup_copy: 'Copy',
+                edit_title: 'Edit Slide',
+                add_title: 'Add New Slide',
+                delete_confirm: 'Delete this slide?',
+                reset_confirm: 'Reset all data to default? This cannot be undone.',
+                import_success: 'Data imported successfully!',
+                import_error: 'Invalid JSON file.',
+                no_notes: 'No speaker notes for this slide.',
+                footer_en: '© 2026 – Designed & Developed by BİŞİŞ',
+                footer_ar: '© 2026 – تصميم وترميز بواسطة BİŞİŞ'
+            },
+            ar: {
+                password_title: '🔐 عرض تقديمي محمي',
+                password_desc: 'أدخل كلمة المرور للوصول إلى هذا العرض.',
+                password_unlock: 'فتح',
+                gate_title: 'وصول حصري للمستثمرين',
+                gate_desc: 'أدخل رمز الدعوة أو أكمل الاستبيان المختصر.',
+                gate_enter: 'دخول',
+                gate_q1: '١. ما هو تركيزك الاستثماري الأساسي؟',
+                gate_q2: '٢. ما هو أفقك الاستثماري؟',
+                gate_submit: 'إرسال والدخول',
+                guide_title: 'دليل المستخدم',
+                guide_nav: 'التنقل بين الشرائح',
+                guide_fullscreen: 'شاشة كاملة',
+                guide_presenter: 'ملاحظات مقدم العرض',
+                guide_thumbs: 'إظهار/إخفاء المصغرات',
+                guide_autopilot: 'تشغيل تلقائي',
+                guide_lang: 'تبديل اللغة',
+                guide_colors: 'تخصيص الألوان',
+                guide_import: 'استيراد/تصدير البيانات',
+                guide_add: 'إضافة/تعديل/حذف شرائح',
+                guide_reset: 'إعادة تعيين',
+                guide_analytics: 'لوحة التحليلات',
+                import_title: 'استيراد / تصدير البيانات',
+                export_btn: 'تصدير البيانات (JSON)',
+                import_btn: 'رفع ملف JSON للاستيراد',
+                more_title: 'خيارات إضافية',
+                more_add: 'إضافة شريحة جديدة',
+                more_edit: 'تعديل الشريحة الحالية',
+                more_importexport: 'استيراد / تصدير',
+                more_guide: 'دليل المستخدم',
+                more_analytics: 'التحليلات',
+                more_market: 'الذكاء السوقي',
+                more_followup: 'المتابعة بالذكاء الاصطناعي',
+                more_reset: 'إعادة تعيين',
+                market_title: 'الذكاء السوقي',
+                market_paste: 'الصق تقرير السوق أو البيانات:',
+                market_analyze: 'تحليل وإنشاء موجز',
+                followup_title: 'تسلسل المتابعة بالذكاء الاصطناعي',
+                followup_desc: 'إنشاء بريد إلكتروني شكر احترافي مع طلب اجتماع.',
+                followup_send: 'إرسال البريد',
+                followup_copy: 'نسخ',
+                edit_title: 'تعديل الشريحة',
+                add_title: 'إضافة شريحة جديدة',
+                delete_confirm: 'هل تريد حذف هذه الشريحة؟',
+                reset_confirm: 'هل تريد إعادة تعيين جميع البيانات؟ لا يمكن التراجع.',
+                import_success: 'تم استيراد البيانات بنجاح!',
+                import_error: 'ملف JSON غير صالح.',
+                no_notes: 'لا توجد ملاحظات لهذه الشريحة.',
+                footer_en: '© 2026 – Designed & Developed by BİŞİŞ',
+                footer_ar: '© 2026 – تصميم وترميز بواسطة BİŞİŞ'
+            }
+        };
+
+        function t(key) { return UI_LABELS[currentLanguage]?.[key] || key; }
+
+        // ============================================================
+        // TELEGRAM NOTIFICATION FUNCTION
+        // ============================================================
+        async function sendTelegramNotification(message) {
+            if (!TELEGRAM_NOTIFICATIONS_ENABLED) return;
+            if (!TELEGRAM_BOT_TOKEN || TELEGRAM_BOT_TOKEN === "YOUR_BOT_TOKEN_HERE") {
+                console.warn('⚠️ Telegram bot token not configured. Notifications disabled.');
+                return;
+            }
+            if (!TELEGRAM_CHAT_ID || TELEGRAM_CHAT_ID === "YOUR_CHAT_ID_HERE") {
+                console.warn('⚠️ Telegram chat ID not configured. Notifications disabled.');
+                return;
+            }
+
+            try {
+                const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: TELEGRAM_CHAT_ID,
+                        text: message,
+                        parse_mode: 'HTML',
+                        disable_web_page_preview: true
+                    })
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    console.error('Telegram API error:', errorData);
+                } else {
+                    console.log('✅ Telegram notification sent successfully.');
+                }
+            } catch (error) {
+                console.error('❌ Failed to send Telegram notification:', error);
+            }
+        }
+
+        // ============================================================
+        // INIT
+        // ============================================================
+        function init() {
+            setTimeout(() => {
+                const splash = $('#splash-screen');
+                if (splash) splash.classList.add('hidden');
+            }, 2000);
+
+            if (DECK_PASSWORD && DECK_PASSWORD.length > 0) {
+                $('#password-overlay').classList.remove('hidden');
+                $('#password-submit').addEventListener('click', handlePassword);
+                $('#password-input').addEventListener('keydown', (e) => { if (e.key === 'Enter') handlePassword(); });
+                return;
+            }
+
+            if (INVESTOR_GATE_ENABLED) {
+                $('#investor-gate').classList.remove('hidden');
+                $('#gate-submit').addEventListener('click', handleGate);
+                $('#gate-submit-questions').addEventListener('click', handleGateQuestions);
+                $('#gate-code').addEventListener('keydown', (e) => { if (e.key === 'Enter') handleGate(); });
+            } else {
+                loadAndRender();
+            }
+        }
+
+        function handlePassword() {
+            const input = $('#password-input');
+            const err = $('#password-error');
+            if (input.value === DECK_PASSWORD) {
+                $('#password-overlay').classList.add('hidden');
+                if (INVESTOR_GATE_ENABLED) {
+                    $('#investor-gate').classList.remove('hidden');
+                    $('#gate-code').focus();
+                } else {
+                    loadAndRender();
+                }
+                input.value = '';
+                err.textContent = '';
+            } else {
+                err.textContent = '❌ Incorrect password.';
+                input.value = '';
+                input.focus();
+            }
+        }
+
+        // ============================================================
+        // HANDLE GATE – WITH TELEGRAM NOTIFICATION
+        // ============================================================
+        function handleGate() {
+            const code = $('#gate-code').value.trim();
+            const err = $('#gate-error');
+
+            if (code === INVITATION_CODE) {
+                // ✅ SUCCESSFUL ACCESS – Send Telegram notification
+                const now = new Date();
+                const timestamp = now.toLocaleString('en-US', {
+                    weekday: 'short',
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    timeZoneName: 'short'
+                });
+
+                // Try to get IP (optional, using a free service)
+                let ipInfo = 'Unknown IP';
+                fetch('https://api.ipify.org?format=json')
+                    .then(res => res.json())
+                    .then(data => {
+                        ipInfo = data.ip || 'Unknown IP';
+                    })
+                    .catch(() => { /* ignore */ })
+                    .finally(() => {
+                        // Send notification with or without IP
+                        const message =
+                            `🔐 <b>Investor Gate Access</b>\n\n` +
+                            `✅ <b>Status:</b> <i>Successful Entry</i>\n` +
+                            `📅 <b>Time:</b> ${timestamp}\n` +
+                            `🌐 <b>IP Address:</b> ${ipInfo}\n` +
+                            `🏷️ <b>Method:</b> Invitation Code (BISIS2026)\n\n` +
+                            `📊 <b>Deck:</b> Sovereign Data Spire\n` +
+                            `⚡ <b>Access:</b> Full presentation granted`;
+
+                        sendTelegramNotification(message);
+                    });
+
+                // Also record locally
+                const localLog = JSON.parse(localStorage.getItem('deck_access_log') || '[]');
+                localLog.push({
+                    timestamp: now.toISOString(),
+                    method: 'invitation_code',
+                    status: 'success'
+                });
+                localStorage.setItem('deck_access_log', JSON.stringify(localLog));
+
+                $('#investor-gate').classList.add('hidden');
+                loadAndRender();
+                err.textContent = '';
+            } else {
+                // ❌ FAILED ATTEMPT – Send notification for suspicious activity
+                const now = new Date();
+                const timestamp = now.toLocaleString('en-US', {
+                    weekday: 'short',
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    timeZoneName: 'short'
+                });
+
+                const message =
+                    `⚠️ <b>Investor Gate – Failed Attempt</b>\n\n` +
+                    `❌ <b>Status:</b> <i>Invalid Code</i>\n` +
+                    `📅 <b>Time:</b> ${timestamp}\n` +
+                    `🔑 <b>Entered Code:</b> "${code}"\n\n` +
+                    `🛡️ <b>Security Alert:</b> Someone tried to access with an invalid invitation code.`;
+
+                sendTelegramNotification(message);
+
+                err.textContent = '❌ Invalid invitation code. Please try again or use the questionnaire.';
+                $('#gate-code').value = '';
+                $('#gate-code').focus();
+            }
+        }
+
+        function handleGateQuestions() {
+            const q1 = $('#gate-q1').value.trim();
+            const q2 = $('#gate-q2').value.trim();
+            if (q1.length > 2 && q2.length > 2) {
+                // ✅ Success via questionnaire – send notification
+                const now = new Date();
+                const timestamp = now.toLocaleString('en-US', {
+                    weekday: 'short',
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    timeZoneName: 'short'
+                });
+
+                const message =
+                    `📋 <b>Investor Gate – Questionnaire Access</b>\n\n` +
+                    `✅ <b>Status:</b> <i>Successful Entry</i>\n` +
+                    `📅 <b>Time:</b> ${timestamp}\n` +
+                    `📝 <b>Investment Focus:</b> ${q1}\n` +
+                    `⏳ <b>Investment Horizon:</b> ${q2}\n\n` +
+                    `📊 <b>Deck:</b> Sovereign Data Spire\n` +
+                    `⚡ <b>Access:</b> Full presentation granted`;
+
+                sendTelegramNotification(message);
+
+                localStorage.setItem('deck_gate_q1', q1);
+                localStorage.setItem('deck_gate_q2', q2);
+                $('#investor-gate').classList.add('hidden');
+                loadAndRender();
+            } else {
+                const err = $('#gate-error');
+                err.textContent = '❌ Please answer both questions with sufficient detail.';
+            }
+        }
+
+        // ============================================================
+        // LOAD & RENDER
+        // ============================================================
+        function loadAndRender() {
+            try {
+                const saved = localStorage.getItem('deck_slidesData');
+                const savedTheme = localStorage.getItem('deck_themeMode');
+                const savedLang = localStorage.getItem('deck_language');
+                const savedIndex = localStorage.getItem('deck_currentSlide');
+
+                if (saved) {
+                    try {
+                        const parsed = JSON.parse(saved);
+                        if (Array.isArray(parsed) && parsed.length > 0) {
+                            slidesData = parsed;
+                        } else {
+                            slidesData = JSON.parse(JSON.stringify(DEFAULT_SLIDES));
+                        }
+                    } catch (e) {
+                        slidesData = JSON.parse(JSON.stringify(DEFAULT_SLIDES));
+                    }
+                } else {
+                    slidesData = JSON.parse(JSON.stringify(DEFAULT_SLIDES));
+                }
+
+                slidesData = slidesData.map((s, idx) => ({
+                    ...s,
+                    id: s.id || idx + 1,
+                    icon: s.icon || 'fa-circle',
+                    titleAr: s.titleAr || 'شريحة',
+                    titleEn: s.titleEn || 'Slide',
+                    bulletsAr: Array.isArray(s.bulletsAr) ? s.bulletsAr : [],
+                    bulletsEn: Array.isArray(s.bulletsEn) ? s.bulletsEn : [],
+                    image: s.image || '',
+                    bgImage: s.bgImage || '',
+                    videoUrl: s.videoUrl || '',
+                    chartData: s.chartData || null,
+                    notes: s.notes || ''
+                }));
+
+                if (savedTheme === 'light') {
+                    isDarkTheme = false;
+                    document.documentElement.classList.add('light-theme');
+                    $('#theme-toggle').innerHTML = '<i class="fas fa-sun"></i>';
+                } else {
+                    isDarkTheme = true;
+                    document.documentElement.classList.remove('light-theme');
+                    $('#theme-toggle').innerHTML = '<i class="fas fa-moon"></i>';
+                }
+
+                if (savedLang === 'ar') {
+                    currentLanguage = 'ar';
+                    document.documentElement.setAttribute('dir', 'rtl');
+                    document.documentElement.dataset.lang = 'ar';
+                    langLabel.textContent = 'AR';
+                } else {
+                    currentLanguage = 'en';
+                    document.documentElement.setAttribute('dir', 'ltr');
+                    document.documentElement.dataset.lang = 'en';
+                    langLabel.textContent = 'EN';
+                }
+
+                if (savedIndex !== null) {
+                    const idx = parseInt(savedIndex, 10);
+                    if (!isNaN(idx) && idx >= 0 && idx < slidesData.length) currentSlideIndex = idx;
+                }
+
+                applyStoredColors();
+                renderAll();
+                bindEvents();
+                startAnalytics();
+                recordSlideView(currentSlideIndex);
+            } catch (e) {
+                console.error('Load error:', e);
+                slidesData = JSON.parse(JSON.stringify(DEFAULT_SLIDES));
+                renderAll();
+                bindEvents();
+            }
+        }
+
+        // ============================================================
+        // ANALYTICS
+        // ============================================================
+        function startAnalytics() {
+            totalStartTime = Date.now();
+            try {
+                const saved = localStorage.getItem('deck_analytics');
+                if (saved) { const parsed = JSON.parse(saved); if (parsed) analyticsData = parsed; }
+            } catch (e) {}
+            recordSlideView(currentSlideIndex);
+            setInterval(() => {
+                try {
+                    analyticsData.totalTime = Math.floor((Date.now() - totalStartTime) / 1000);
+                    localStorage.setItem('deck_analytics', JSON.stringify(analyticsData));
+                } catch (e) {}
+            }, 10000);
+        }
+
+        function recordSlideView(index) {
+            try {
+                if (currentChartIndex >= 0 && slideStartTimes[currentChartIndex]) {
+                    const elapsed = (Date.now() - slideStartTimes[currentChartIndex]) / 1000;
+                    const slideId = String(slidesData[currentChartIndex]?.id || currentChartIndex);
+                    if (!analyticsData.slideTimes[slideId]) analyticsData.slideTimes[slideId] = 0;
+                    analyticsData.slideTimes[slideId] += elapsed;
+                }
+                currentChartIndex = index;
+                slideStartTimes[index] = Date.now();
+                renderAnalytics();
+            } catch (e) {}
+        }
+
+        function renderAnalytics() {
+            const el = $('#analytics-content');
+            if (!el) return;
+            try {
+                let html = '';
+                const total = Object.values(analyticsData.slideTimes).reduce((a, b) => a + b, 0);
+                html +=
+                    `<div class="analytics-row"><span class="label">Total Time</span><span class="value">${Math.round(total)}s</span></div>`;
+                html +=
+                    `<div class="analytics-row"><span class="label">Slides Viewed</span><span class="value">${Object.keys(analyticsData.slideTimes).length} / ${slidesData.length}</span></div>`;
+                const sorted = Object.entries(analyticsData.slideTimes).sort((a, b) => b[1] - a[1]).slice(0, 5);
+                sorted.forEach(([id, time]) => {
+                    const slide = slidesData.find(s => String(s.id) === String(id));
+                    const label = slide ? (currentLanguage === 'ar' ? slide.titleAr : slide.titleEn) : 'Slide ' +
+                    id;
+                    html +=
+                        `<div class="analytics-row"><span class="label">${label}</span><span class="value">${Math.round(time)}s</span></div>`;
+                });
+                el.innerHTML = html;
+            } catch (e) {}
+        }
+
+        function toggleAnalytics() {
+            const panel = $('#analytics-panel');
+            panel.classList.toggle('open');
+            if (panel.classList.contains('open')) renderAnalytics();
+        }
+
+        // ============================================================
+        // RENDER
+        // ============================================================
+        function renderAll() {
+            try {
+                renderSlides();
+                renderThumbnails();
+                updateSlide();
+                updateProgress();
+                updateCounter();
+                updateThumbnailsActive();
+                updatePresenterNotes();
+                updateAutoPilotUI();
+                saveState();
+            } catch (e) { console.error('Render error:', e); }
+        }
+
+        function renderSlides() {
+            container.innerHTML = '';
+            slidesData.forEach((slide, idx) => {
+                const wrapper = document.createElement('div');
+                wrapper.className = 'slide-wrapper' + (idx === currentSlideIndex ? ' active' : '');
+                wrapper.dataset.index = idx;
+
+                const isAr = currentLanguage === 'ar';
+                const title = isAr ? slide.titleAr : slide.titleEn;
+                const bullets = isAr ? slide.bulletsAr : slide.bulletsEn;
+                const iconClass = slide.icon || 'fa-circle';
+                const footerText = isAr ? t('footer_ar') : t('footer_en');
+
+                let bgStyle = '';
+                if (slide.bgImage) bgStyle = `background-image: url('${slide.bgImage}');`;
+
+                let mediaHTML = '';
+                if (slide.videoUrl) {
+                    mediaHTML =
+                        `<div class="slide-media"><iframe src="${slide.videoUrl}" allowfullscreen loading="lazy"></iframe></div>`;
+                } else if (slide.image) {
+                    mediaHTML =
+                        `<div class="slide-media"><img src="${slide.image}" alt="${title}" loading="lazy" onerror="this.style.display='none'" /></div>`;
+                }
+
+                let chartHTML = '';
+                if (slide.chartData) {
+                    chartHTML =
+                        `<div class="chart-container" id="chart-container-${idx}"><canvas id="chart-${idx}"></canvas><div class="chart-fallback" id="fallback-${idx}"></div></div>`;
+                }
+
+                wrapper.innerHTML = `
+                    <div class="slide-card ${slide.bgImage ? 'has-bg' : ''}" style="${bgStyle}">
+                        <div class="slide-body">
+                            <span class="slide-icon"><i class="fas ${iconClass}"></i></span>
+                            <h1 class="slide-title">${title}</h1>
+                            ${bullets && bullets.length ? `<ul class="slide-bullets">${bullets.map(b => `<li>${b}</li>`).join('')}</ul>` : ''}
+                            ${mediaHTML}
+                            ${chartHTML}
+                        </div>
+                        <div class="slide-footer">
+                            <span></span>
+                            <span class="footer-bisis"><span class="bolt">⚡</span> ${footerText}</span>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(wrapper);
+            });
+            setTimeout(() => { renderChartsForCurrent(); }, 150);
+        }
+
+        function renderThumbnails() {
+            thumbnails.innerHTML = '';
+            slidesData.forEach((slide, idx) => {
+                const thumb = document.createElement('div');
+                thumb.className = 'thumb' + (idx === currentSlideIndex ? ' active' : '');
+                const label = currentLanguage === 'ar' ? slide.titleAr : slide.titleEn;
+                const short = label.length > 18 ? label.slice(0, 16) + '…' : label;
+                thumb.innerHTML = `<span>${short}</span><span class="thumb-num">${idx + 1}</span>`;
+                thumb.dataset.index = idx;
+                thumb.addEventListener('click', () => goToSlide(idx));
+                thumbnails.appendChild(thumb);
+            });
+            if (!isThumbsVisible) thumbnails.classList.add('hidden');
+        }
+
+        function updateSlide() {
+            const wrappers = $$('.slide-wrapper', container);
+            wrappers.forEach((w, i) => { w.classList.toggle('active', i === currentSlideIndex); });
+            updateCounter();
+            updateProgress();
+            updateThumbnailsActive();
+            updatePresenterNotes();
+            renderChartsForCurrent();
+            recordSlideView(currentSlideIndex);
+            saveState();
+        }
+
+        function updateCounter() {
+            slideCounter.textContent = `${currentSlideIndex + 1} / ${slidesData.length}`;
+        }
+
+        function updateProgress() {
+            const pct = slidesData.length > 1 ? ((currentSlideIndex) / (slidesData.length - 1)) * 100 : 0;
+            progressFill.style.width = pct + '%';
+        }
+
+        function updateThumbnailsActive() {
+            $$('.thumb', thumbnails).forEach((t, i) => { t.classList.toggle('active', i === currentSlideIndex); });
+            const active = $$('.thumb', thumbnails).find((t, i) => i === currentSlideIndex);
+            if (active) active.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+        }
+
+        function updatePresenterNotes() {
+            const slide = slidesData[currentSlideIndex];
+            presenterNotesContent.innerHTML = (slide && slide.notes) ? slide.notes : t('no_notes');
+        }
+
+        function updateAutoPilotUI() {
+            const btn = $('#autopilot-toggle');
+            if (isAutoPilot) { btn.innerHTML = '<i class="fas fa-pause"></i>';
+                btn.classList.add('active'); } else { btn.innerHTML = '<i class="fas fa-play"></i>';
+                btn.classList.remove('active'); }
+        }
+
+        // ============================================================
+        // CHARTS
+        // ============================================================
+        function renderChartsForCurrent() {
+            chartInstances.forEach(c => { try { c.destroy(); } catch (e) {} });
+            chartInstances = [];
+            const slide = slidesData[currentSlideIndex];
+            if (slide && slide.chartData) renderChart(slide, currentSlideIndex);
+        }
+
+        function renderChart(slide, idx) {
+            const canvas = document.getElementById(`chart-${idx}`);
+            const fallback = document.getElementById(`fallback-${idx}`);
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const data = slide.chartData;
+            if (!data || !data.labels || !data.values) {
+                if (fallback) fallback.textContent = 'Invalid chart data.';
+                return;
+            }
+            if (typeof Chart === 'undefined') {
+                if (fallback) {
+                    fallback.style.display = 'block';
+                    let html = '<table><thead><tr><th>Label</th><th>Value</th></tr></thead><tbody>';
+                    data.labels.forEach((label, i) => {
+                        html += `<tr><td>${label}</td><td>${data.values[i] ?? '-'}</td></tr>`;
+                    });
+                    html += '</tbody></table>';
+                    fallback.innerHTML = html;
+                    canvas.parentElement.classList.add('chart-error');
+                }
+                return;
+            }
+            try {
+                const type = data.type || 'bar';
+                const isDark = isDarkTheme;
+                const textColor = isDark ? '#EAEAEA' : '#1A1A1A';
+                const gridColor = isDark ? '#2A2A2A' : '#D5CFC4';
+                const gold = getComputedStyle(document.documentElement).getPropertyValue('--accent-gold').trim() || '#D4AF37';
+                const chart = new Chart(ctx, {
+                    type: type,
+                    data: {
+                        labels: data.labels,
+                        datasets: [{
+                            label: currentLanguage === 'ar' ? 'القيمة' : 'Value',
+                            data: data.values,
+                            backgroundColor: type === 'doughnut' ? [gold, '#B87333', '#2A2A2A'] :
+                                gold + '80',
+                            borderColor: gold,
+                            borderWidth: 2,
+                            tension: 0.3,
+                            fill: type === 'line' ? false : true,
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: true,
+                        plugins: { legend: { labels: { color: textColor, font: { size: 11 } } } },
+                        scales: type !== 'doughnut' ? {
+                            x: { ticks: { color: textColor }, grid: { color: gridColor } },
+                            y: { ticks: { color: textColor }, grid: { color: gridColor } }
+                        } : undefined
+                    }
+                });
+                chartInstances.push(chart);
+                if (fallback) { fallback.style.display = 'none';
+                    canvas.parentElement.classList.remove('chart-error'); }
+            } catch (e) {
+                if (fallback) { fallback.style.display = 'block';
+                    fallback.textContent = '⚠️ Chart error.';
+                    canvas.parentElement.classList.add('chart-error'); }
+            }
+        }
+
+        // ============================================================
+        // NAVIGATION
+        // ============================================================
+        function goToSlide(index) {
+            if (index < 0) index = 0;
+            if (index >= slidesData.length) index = slidesData.length - 1;
+            if (index === currentSlideIndex) return;
+            try {
+                const prevId = String(slidesData[currentSlideIndex]?.id || currentSlideIndex);
+                if (analyticsData.slideTimes[prevId] && analyticsData.slideTimes[prevId] < 2) {
+                    analyticsData.dropOffs.push(prevId);
+                }
+            } catch (e) {}
+            currentSlideIndex = index;
+            updateSlide();
+            if (isAutoPilot) resetAutoPilotTimer();
+        }
+
+        function nextSlide() { goToSlide(currentSlideIndex + 1); }
+
+        function prevSlide() { goToSlide(currentSlideIndex - 1); }
+
+        // ============================================================
+        // AUTO-PILOT
+        // ============================================================
+        function toggleAutoPilot() {
+            isAutoPilot = !isAutoPilot;
+            if (isAutoPilot) startAutoPilot();
+            else stopAutoPilot();
+            updateAutoPilotUI();
+        }
+
+        function startAutoPilot() {
+            stopAutoPilot();
+            let remaining = AUTO_PILOT_DELAY;
+            updateTimerLabel(remaining);
+            autoPilotCountdown = setInterval(() => {
+                remaining--;
+                updateTimerLabel(remaining);
+                if (remaining <= 0) { remaining = AUTO_PILOT_DELAY;
+                    nextSlide();
+                    updateTimerLabel(remaining); }
+            }, 1000);
+        }
+
+        function stopAutoPilot() {
+            if (autoPilotCountdown) { clearInterval(autoPilotCountdown);
+                autoPilotCountdown = null; }
+            if (autoPilotTimer) { clearTimeout(autoPilotTimer);
+                autoPilotTimer = null; }
+            timerLabel.textContent = '';
+        }
+
+        function resetAutoPilotTimer() { if (isAutoPilot) { stopAutoPilot();
+                startAutoPilot(); } }
+
+        function updateTimerLabel(seconds) { timerLabel.textContent = (seconds > 0) ? `${seconds}s` : ''; }
+
+        // ============================================================
+        // THEME
+        // ============================================================
+        function toggleTheme() {
+            isDarkTheme = !isDarkTheme;
+            if (isDarkTheme) {
+                document.documentElement.classList.remove('light-theme');
+                $('#theme-toggle').innerHTML = '<i class="fas fa-moon"></i>';
+                localStorage.setItem('deck_themeMode', 'dark');
+            } else {
+                document.documentElement.classList.add('light-theme');
+                $('#theme-toggle').innerHTML = '<i class="fas fa-sun"></i>';
+                localStorage.setItem('deck_themeMode', 'light');
+            }
+            renderChartsForCurrent();
+        }
+
+        // ============================================================
+        // COLORS
+        // ============================================================
+        function applyStoredColors() {
+            try {
+                const stored = localStorage.getItem('deck_themeColors');
+                if (stored) {
+                    const colors = JSON.parse(stored);
+                    const root = document.documentElement;
+                    if (colors.bg) root.style.setProperty('--bg-primary', colors.bg);
+                    if (colors.bgSecondary) root.style.setProperty('--bg-secondary', colors.bgSecondary);
+                    if (colors.text) root.style.setProperty('--text-primary', colors.text);
+                    if (colors.textSecondary) root.style.setProperty('--text-secondary', colors.textSecondary);
+                    if (colors.accent) root.style.setProperty('--accent-gold', colors.accent);
+                    if (colors.accentSecondary) root.style.setProperty('--accent-copper', colors.accentSecondary);
+                    if (colors.border) root.style.setProperty('--border-color', colors.border);
+                    if (colors.cardBg) root.style.setProperty('--bg-card', colors.cardBg);
+                    const cpMap = {
+                        'cp-bg': colors.bg,
+                        'cp-card': colors.cardBg,
+                        'cp-text': colors.text,
+                        'cp-gold': colors.accent,
+                        'cp-copper': colors.accentSecondary,
+                        'cp-border': colors.border
+                    };
+                    Object.keys(cpMap).forEach(id => {
+                        const el = document.getElementById(id);
+                        if (el && cpMap[id]) el.value = cpMap[id];
+                    });
+                }
+            } catch (e) {}
+        }
+
+        function saveColorsFromPicker() {
+            try {
+                const root = document.documentElement;
+                const bg = $('#cp-bg').value;
+                const card = $('#cp-card').value;
+                const text = $('#cp-text').value;
+                const gold = $('#cp-gold').value;
+                const copper = $('#cp-copper').value;
+                const border = $('#cp-border').value;
+
+                root.style.setProperty('--bg-primary', bg);
+                root.style.setProperty('--bg-card', card);
+                root.style.setProperty('--text-primary', text);
+                root.style.setProperty('--accent-gold', gold);
+                root.style.setProperty('--accent-copper', copper);
+                root.style.setProperty('--border-color', border);
+
+                const bgSec = adjustBrightness(bg, -10);
+                root.style.setProperty('--bg-secondary', bgSec);
+                const textSec = adjustBrightness(text, -30);
+                root.style.setProperty('--text-secondary', textSec);
+
+                const colors = { bg, bgSecondary: bgSec, cardBg: card, text, textSecondary: textSec, accent: gold,
+                    accentSecondary: copper, border };
+                localStorage.setItem('deck_themeColors', JSON.stringify(colors));
+                renderChartsForCurrent();
+            } catch (e) {}
+        }
+
+        function adjustBrightness(hex, amount) {
+            try {
+                let r = parseInt(hex.slice(1, 3), 16),
+                    g = parseInt(hex.slice(3, 5), 16),
+                    b = parseInt(hex.slice(5, 7), 16);
+                r = Math.max(0, Math.min(255, r + amount));
+                g = Math.max(0, Math.min(255, g + amount));
+                b = Math.max(0, Math.min(255, b + amount));
+                return `#${r.toString(16).padStart(2,'0')}${g.toString(16).padStart(2,'0')}${b.toString(16).padStart(2,'0')}`;
+            } catch (e) { return hex; }
+        }
+
+        function resetColors() {
+            try {
+                localStorage.removeItem('deck_themeColors');
+                const root = document.documentElement;
+                root.style.removeProperty('--bg-primary');
+                root.style.removeProperty('--bg-secondary');
+                root.style.removeProperty('--bg-card');
+                root.style.removeProperty('--text-primary');
+                root.style.removeProperty('--text-secondary');
+                root.style.removeProperty('--accent-gold');
+                root.style.removeProperty('--accent-copper');
+                root.style.removeProperty('--border-color');
+                const defs = {
+                    'cp-bg': isDarkTheme ? '#0A0A0A' : '#F8F6F0',
+                    'cp-card': isDarkTheme ? '#1A1A1A' : '#FFFFFF',
+                    'cp-text': isDarkTheme ? '#EAEAEA' : '#1A1A1A',
+                    'cp-gold': '#D4AF37',
+                    'cp-copper': '#B87333',
+                    'cp-border': isDarkTheme ? '#2A2A2A' : '#D5CFC4'
+                };
+                Object.keys(defs).forEach(id => { const el = document.getElementById(id); if (el) el.value = defs[id]; });
+                if (isDarkTheme) document.documentElement.classList.remove('light-theme');
+                else document.documentElement.classList.add('light-theme');
+                renderChartsForCurrent();
+            } catch (e) {}
+        }
+
+        // ============================================================
+        // LANGUAGE
+        // ============================================================
+        function toggleLanguage() {
+            currentLanguage = currentLanguage === 'en' ? 'ar' : 'en';
+            document.documentElement.setAttribute('dir', currentLanguage === 'ar' ? 'rtl' : 'ltr');
+            document.documentElement.dataset.lang = currentLanguage;
+            langLabel.textContent = currentLanguage === 'ar' ? 'AR' : 'EN';
+            localStorage.setItem('deck_language', currentLanguage);
+            renderAll();
+            renderChartsForCurrent();
+        }
+
+        // ============================================================
+        // FULLSCREEN
+        // ============================================================
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(() => {});
+            } else {
+                document.exitFullscreen().catch(() => {});
+            }
+        }
+
+        // ============================================================
+        // PRESENTER
+        // ============================================================
+        function togglePresenter() {
+            isPresenterVisible = !isPresenterVisible;
+            presenterOverlay.classList.toggle('visible', isPresenterVisible);
+            $('#presenter-toggle').classList.toggle('active', isPresenterVisible);
+        }
+
+        // ============================================================
+        // THUMBNAILS
+        // ============================================================
+        function toggleThumbnails() {
+            isThumbsVisible = !isThumbsVisible;
+            thumbnails.classList.toggle('hidden', !isThumbsVisible);
+            $('#thumb-toggle').classList.toggle('active', isThumbsVisible);
+        }
+
+        // ============================================================
+        // SLIDE MANAGEMENT
+        // ============================================================
+        const ICON_LIST = [
+            'fa-tower-broadcast', 'fa-chart-line', 'fa-eye', 'fa-exclamation-triangle',
+            'fa-lightbulb', 'fa-cubes', 'fa-list-check', 'fa-water', 'fa-shield-halved',
+            'fa-bolt', 'fa-chart-pie', 'fa-medal', 'fa-leaf', 'fa-paintbrush',
+            'fa-timeline', 'fa-handshake', 'fa-rocket', 'fa-globe', 'fa-lock',
+            'fa-brain', 'fa-microchip', 'fa-cloud', 'fa-database', 'fa-server'
+        ];
+
+        function openEditModal(slideId) {
+            const isNew = slideId === undefined || slideId === null;
+            const slide = isNew ? null : slidesData.find(s => s.id === slideId);
+            const titleEl = $('#edit-modal-title');
+            if (isNew) {
+                titleEl.textContent = t('add_title');
+                $('#edit-modal-delete').style.display = 'none';
+                $('#edit-modal-duplicate').style.display = 'none';
+                editSlideId = null;
+                $('#edit-icon').value = 'fa-circle';
+                $('#edit-title-en').value = '';
+                $('#edit-title-ar').value = '';
+                $('#edit-bullets-en').value = '';
+                $('#edit-bullets-ar').value = '';
+                $('#edit-image').value = '';
+                $('#edit-bgimage').value = '';
+                $('#edit-video').value = '';
+                $('#edit-chart').value = '';
+                $('#edit-notes').value = '';
+            } else if (slide) {
+                titleEl.textContent = t('edit_title');
+                $('#edit-modal-delete').style.display = 'inline-block';
+                $('#edit-modal-duplicate').style.display = 'inline-block';
+                editSlideId = slide.id;
+                $('#edit-icon').value = slide.icon || '';
+                $('#edit-title-en').value = slide.titleEn || '';
+                $('#edit-title-ar').value = slide.titleAr || '';
+                $('#edit-bullets-en').value = (slide.bulletsEn || []).join('\n');
+                $('#edit-bullets-ar').value = (slide.bulletsAr || []).join('\n');
+                $('#edit-image').value = slide.image || '';
+                $('#edit-bgimage').value = slide.bgImage || '';
+                $('#edit-video').value = slide.videoUrl || '';
+                $('#edit-chart').value = slide.chartData ? JSON.stringify(slide.chartData) : '';
+                $('#edit-notes').value = slide.notes || '';
+            } else return;
+
+            const grid = $('#icon-grid');
+            grid.innerHTML = '';
+            ICON_LIST.forEach(icon => {
+                const div = document.createElement('div');
+                div.className = 'icon-option' + (icon === $('#edit-icon').value ? ' selected' : '');
+                div.innerHTML = `<i class="fas ${icon}"></i>`;
+                div.dataset.icon = icon;
+                div.addEventListener('click', () => {
+                    $$('.icon-option', grid).forEach(el => el.classList.remove('selected'));
+                    div.classList.add('selected');
+                    $('#edit-icon').value = icon;
+                });
+                grid.appendChild(div);
+            });
+            editModal.classList.add('open');
+        }
+
+        function closeEditModal() { editModal.classList.remove('open'); }
+
+        function saveSlideFromModal() {
+            try {
+                const icon = $('#edit-icon').value.trim() || 'fa-circle';
+                const titleEn = $('#edit-title-en').value.trim() || 'Untitled';
+                const titleAr = $('#edit-title-ar').value.trim() || 'بدون عنوان';
+                const bulletsEn = $('#edit-bullets-en').value.split('\n').filter(b => b.trim());
+                const bulletsAr = $('#edit-bullets-ar').value.split('\n').filter(b => b.trim());
+                const image = $('#edit-image').value.trim();
+                const bgImage = $('#edit-bgimage').value.trim();
+                const videoUrl = $('#edit-video').value.trim();
+                const chartRaw = $('#edit-chart').value.trim();
+                const notes = $('#edit-notes').value.trim();
+
+                let chartData = null;
+                if (chartRaw) { try { chartData = JSON.parse(chartRaw); } catch (e) { chartData = null; } }
+
+                if (editSlideId === null) {
+                    const newId = slidesData.length > 0 ? Math.max(...slidesData.map(s => s.id)) + 1 : 1;
+                    slidesData.push({ id: newId, icon, titleAr, titleEn, bulletsAr, bulletsEn, image, bgImage, videoUrl,
+                        chartData, notes });
+                } else {
+                    const idx = slidesData.findIndex(s => s.id === editSlideId);
+                    if (idx !== -1) {
+                        slidesData[idx] = { ...slidesData[idx], icon, titleAr, titleEn, bulletsAr, bulletsEn, image,
+                            bgImage, videoUrl, chartData, notes };
+                    }
+                }
+                closeEditModal();
+                renderAll();
+                saveState();
+            } catch (e) { alert('Error saving slide.'); }
+        }
+
+        function duplicateSlide() {
+            try {
+                const idx = slidesData.findIndex(s => s.id === editSlideId);
+                if (idx === -1) return;
+                const original = slidesData[idx];
+                const newId = slidesData.length > 0 ? Math.max(...slidesData.map(s => s.id)) + 1 : 1;
+                const copy = JSON.parse(JSON.stringify(original));
+                copy.id = newId;
+                copy.titleEn = original.titleEn + ' (Copy)';
+                copy.titleAr = original.titleAr + ' (نسخة)';
+                slidesData.splice(idx + 1, 0, copy);
+                closeEditModal();
+                renderAll();
+                saveState();
+                goToSlide(idx + 1);
+            } catch (e) { alert('Error duplicating slide.'); }
+        }
+
+        function deleteCurrentSlideModal() {
+            if (slidesData.length <= 1) { alert('Cannot delete the last slide.'); return; }
+            if (!confirm(t('delete_confirm'))) return;
+            try {
+                const idx = slidesData.findIndex(s => s.id === editSlideId);
+                if (idx !== -1) {
+                    slidesData.splice(idx, 1);
+                    if (currentSlideIndex >= slidesData.length) currentSlideIndex = slidesData.length - 1;
+                    closeEditModal();
+                    renderAll();
+                    saveState();
+                }
+            } catch (e) { alert('Error deleting slide.'); }
+        }
+
+        // ============================================================
+        // IMPORT / EXPORT
+        // ============================================================
+        function exportData() {
+            try {
+                const data = JSON.stringify(slidesData, null, 2);
+                const blob = new Blob([data], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `deck_data_${new Date().toISOString().slice(0,10)}.json`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            } catch (e) { alert('Error exporting data.'); }
+        }
+
+        function importData(file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    if (Array.isArray(data) && data.length > 0) {
+                        slidesData = data;
+                        currentSlideIndex = 0;
+                        renderAll();
+                        saveState();
+                        $('#import-status').textContent = '✅ ' + t('import_success');
+                        setTimeout(() => { $('#import-status').textContent = ''; }, 3000);
+                    } else {
+                        $('#import-status').textContent = '❌ ' + t('import_error');
+                    }
+                } catch (err) {
+                    $('#import-status').textContent = '❌ ' + t('import_error');
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        // ============================================================
+        // RESET
+        // ============================================================
+        function resetToDefault() {
+            if (!confirm(t('reset_confirm'))) return;
+            try {
+                localStorage.removeItem('deck_slidesData');
+                localStorage.removeItem('deck_themeColors');
+                localStorage.removeItem('deck_currentSlide');
+                localStorage.removeItem('deck_analytics');
+                slidesData = JSON.parse(JSON.stringify(DEFAULT_SLIDES));
+                currentSlideIndex = 0;
+                isDarkTheme = true;
+                document.documentElement.classList.remove('light-theme');
+                $('#theme-toggle').innerHTML = '<i class="fas fa-moon"></i>';
+                localStorage.setItem('deck_themeMode', 'dark');
+                resetColors();
+                renderAll();
+                saveState();
+                analyticsData = { slideTimes: {}, totalTime: 0, dropOffs: [] };
+                localStorage.setItem('deck_analytics', JSON.stringify(analyticsData));
+            } catch (e) { alert('Error resetting.'); }
+        }
+
+        // ============================================================
+        // MARKET INTELLIGENCE
+        // ============================================================
+        function analyzeMarket() {
+            const input = $('#market-input').value.trim();
+            const output = $('#market-brief-output');
+            if (!input || input.length < 20) {
+                output.style.display = 'block';
+                output.innerHTML = '⚠️ Please paste at least 20 characters of market data.';
+                return;
+            }
+            try {
+                const keywords = ['AI', 'data', 'cloud', 'security', 'sovereignty', 'sustainability', 'hydrogen', 'cooling',
+                    'infrastructure', 'digital', 'cyber', 'regulation', 'compliance', 'energy'
+                ];
+                const found = keywords.filter(k => input.toLowerCase().includes(k.toLowerCase()));
+                const gaps = [];
+                if (!found.includes('sovereignty')) gaps.push('Sovereignty narrative underdeveloped');
+                if (!found.includes('hydrogen') && !found.includes('cooling')) gaps.push('Green cooling innovation gap');
+                if (!found.includes('cyber') && !found.includes('security')) gaps.push('Cyber resilience missing');
+                if (!found.includes('sustainability')) gaps.push('Sustainability metrics absent');
+
+                let html =
+                    '<div style="font-weight:700;color:var(--accent-gold);margin-bottom:6px;">📋 Market Intelligence Brief</div>';
+                html +=
+                    `<div class="brief-item"><span class="conf">🔍 Found:</span><span>${found.length > 0 ? found.join(', ') : 'No key terms detected'}</span></div>`;
+                html +=
+                    `<div class="brief-item"><span class="conf">📌 Gaps:</span><span>${gaps.length > 0 ? gaps.join('; ') : 'No major gaps identified'}</span></div>`;
+                html +=
+                    `<div class="brief-item"><span class="conf">📊 Confidence:</span><span>${gaps.length < 2 ? 'High (85%)' : 'Medium (65%)'}</span></div>`;
+                if (gaps.length > 0) {
+                    html +=
+                        `<div class="brief-item" style="margin-top:6px;padding-top:6px;border-top:1px solid var(--border-color);"><span class="conf">💡 Recommendation:</span><span>Focus on ${gaps.slice(0,2).join(' and ')} in your positioning.</span></div>`;
+                }
+                output.style.display = 'block';
+                output.innerHTML = html;
+            } catch (e) {
+                output.style.display = 'block';
+                output.innerHTML = '⚠️ Error analyzing market data.';
+            }
+        }
+
+        // ============================================================
+        // AI FOLLOW-UP
+        // ============================================================
+        function generateFollowup() {
+            try {
+                const slide = slidesData[currentSlideIndex];
+                const topic = slide ? (currentLanguage === 'ar' ? slide.titleAr : slide.titleEn) : 'Sovereign Data Spire';
+                const isAr = currentLanguage === 'ar';
+                let subject = isAr ? 'شكراً لك – متابعة حول ' + topic : 'Thank You – Follow-up on ' + topic;
+                let body = isAr ?
+                    `عزيزي المستثمر،
+
+شكراً جزيلاً على وقتك الثمين واهتمامك بمشروع "${topic}". لقد كانت مناقشتنا ملهمة ونرى توافقاً واضحاً مع رؤيتك الاستثمارية.
+
+نود دعوتك لحضور اجتماع افتراضي لمدة ٣٠ دقيقة لمناقشة تفاصيل تقنية التبريد بالهيدروجين الأخضر وقابلية التوسع، بالإضافة إلى الجدول الزمني للتشغيل.
+
+يمكنك تحديد موعد مناسب عبر الرابط أدناه، أو الرد على هذا البريد الإلكتروني لتنسيق الوقت.
+
+نتطلع إلى بناء مستقبل السيادة الرقمية معاً.
+
+مع خالص التحية،
+فريق BİŞİŞ` :
+                    `Dear Investor,
+
+Thank you sincerely for your valuable time and interest in the "${topic}" project. Our discussion was inspiring, and we see a clear alignment with your investment vision.
+
+We would like to invite you to a 30-minute virtual meeting to discuss the green hydrogen cooling technology scalability and the operational timeline in more detail.
+
+You can schedule a convenient time via the link below, or reply to this email to coordinate.
+
+We look forward to building the future of digital sovereignty together.
+
+Best regards,
+The BİŞİŞ Team`;
+
+                $('#followup-email').textContent = body;
+                const mailto = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+                $('#followup-mailto').href = mailto;
+                followupModal.classList.add('open');
+            } catch (e) { alert('Error generating follow-up.'); }
+        }
+
+        function copyFollowup() {
+            const text = $('#followup-email').textContent;
+            if (!text) return;
+            try {
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(text).then(() => {
+                        const btn = $('#followup-copy');
+                        btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                        setTimeout(() => { btn.innerHTML = '<i class="fas fa-copy"></i> ' + t('followup_copy'); },
+                        2000);
+                    }).catch(() => fallbackCopy(text));
+                } else {
+                    fallbackCopy(text);
+                }
+            } catch (e) { fallbackCopy(text); }
+        }
+
+        function fallbackCopy(text) {
+            try {
+                const ta = document.createElement('textarea');
+                ta.value = text;
+                ta.style.position = 'fixed';
+                ta.style.opacity = '0';
+                document.body.appendChild(ta);
+                ta.select();
+                document.execCommand('copy');
+                document.body.removeChild(ta);
+                const btn = $('#followup-copy');
+                btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                setTimeout(() => { btn.innerHTML = '<i class="fas fa-copy"></i> ' + t('followup_copy'); }, 2000);
+            } catch (e) { alert('Could not copy. Please select and copy manually.'); }
+        }
+
+        // ============================================================
+        // VISUAL UPSCALER
+        // ============================================================
+        function generateVisualPrompt() {
+            try {
+                const slide = slidesData[currentSlideIndex];
+                if (!slide) return;
+                const title = currentLanguage === 'ar' ? slide.titleAr : slide.titleEn;
+                const bullets = (currentLanguage === 'ar' ? slide.bulletsAr : slide.bulletsEn) || [];
+                const keywords = bullets.slice(0, 3).join(', ');
+                const prompt =
+                    `Future-Noir architectural visualization of "${title}" – ${keywords} – Obsidian and gold tones, copper accents, holographic data streams, biometric security layers, green hydrogen cooling towers, cyberpunk aesthetic, dramatic lighting, 8k, photorealistic, architectural rendering, cinematic composition --ar 16:9 --v 6.0`;
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(prompt).then(() => {
+                        alert('✅ Visual prompt copied to clipboard!\n\n' + prompt.slice(0, 200) + '...');
+                    }).catch(() => { alert('Copy manually:\n\n' + prompt); });
+                } else {
+                    alert('Copy manually:\n\n' + prompt);
+                }
+            } catch (e) {}
+        }
+
+        // ============================================================
+        // STATE
+        // ============================================================
+        function saveState() {
+            try {
+                localStorage.setItem('deck_slidesData', JSON.stringify(slidesData));
+                localStorage.setItem('deck_currentSlide', String(currentSlideIndex));
+            } catch (e) {}
+        }
+
+        // ============================================================
+        // KEYBOARD
+        // ============================================================
+        function handleKeydown(e) {
+            const key = e.key;
+            if (key === 'ArrowRight' || key === 'ArrowDown') { e.preventDefault();
+                nextSlide(); return; }
+            if (key === 'ArrowLeft' || key === 'ArrowUp') { e.preventDefault();
+                prevSlide(); return; }
+            if (key === 'f' || key === 'F') { e.preventDefault();
+                toggleFullscreen(); return; }
+            if (key === 'p' || key === 'P') { e.preventDefault();
+                togglePresenter(); return; }
+            if (key === 'h' || key === 'H') { e.preventDefault();
+                toggleThumbnails(); return; }
+            if (key === 'r' || key === 'R') { e.preventDefault();
+                resetToDefault(); return; }
+            if (key === 'a' || key === 'A') { e.preventDefault();
+                toggleAnalytics(); return; }
+            if (key === 'Escape') {
+                if (editModal.classList.contains('open')) closeEditModal();
+                if (guideModal.classList.contains('open')) guideModal.classList.remove('open');
+                if (importModal.classList.contains('open')) importModal.classList.remove('open');
+                if (moreModal.classList.contains('open')) moreModal.classList.remove('open');
+                if (marketModal && marketModal.classList.contains('open')) marketModal.classList.remove('open');
+                if (followupModal && followupModal.classList.contains('open')) followupModal.classList.remove('open');
+                if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
+                $('#color-picker-panel').classList.remove('open');
+                $('#analytics-panel').classList.remove('open');
+            }
+        }
+
+        // ============================================================
+        // BIND EVENTS
+        // ============================================================
+        function bindEvents() {
+            const moreModal = $('#more-modal');
+            const editModal = $('#edit-modal');
+            const guideModal = $('#guide-modal');
+            const importModal = $('#import-modal');
+            marketModal = $('#market-modal');
+            followupModal = $('#followup-modal');
+
+            // Navigation
+            $('#nav-prev').addEventListener('click', prevSlide);
+            $('#nav-next').addEventListener('click', nextSlide);
+
+            // Theme
+            $('#theme-toggle').addEventListener('click', toggleTheme);
+
+            // Language
+            $('#lang-toggle').addEventListener('click', toggleLanguage);
+
+            // Fullscreen
+            $('#fullscreen-toggle').addEventListener('click', toggleFullscreen);
+
+            // Presenter
+            $('#presenter-toggle').addEventListener('click', togglePresenter);
+
+            // Thumbnails
+            $('#thumb-toggle').addEventListener('click', toggleThumbnails);
+            if (isThumbsVisible) $('#thumb-toggle').classList.add('active');
+
+            // Auto-Pilot
+            $('#autopilot-toggle').addEventListener('click', toggleAutoPilot);
+
+            // Color picker toggle
+            $('#color-picker-toggle').addEventListener('click', (e) => {
+                e.stopPropagation();
+                const panel = $('#color-picker-panel');
+                panel.classList.toggle('open');
+            });
+            document.addEventListener('click', (e) => {
+                const panel = $('#color-picker-panel');
+                if (!panel.contains(e.target) && e.target !== $('#color-picker-toggle')) {
+                    panel.classList.remove('open');
+                }
+            });
+
+            // Color picker inputs
+            ['cp-bg', 'cp-card', 'cp-text', 'cp-gold', 'cp-copper', 'cp-border'].forEach(id => {
+                $(`#${id}`).addEventListener('input', saveColorsFromPicker);
+            });
+            $('#reset-colors-btn').addEventListener('click', resetColors);
+
+            // More menu (three dots)
+            $('#more-menu-toggle').addEventListener('click', () => {
+                moreModal.classList.toggle('open');
+            });
+            $('#more-modal-close').addEventListener('click', () => moreModal.classList.remove('open'));
+
+            $('#more-add-slide').addEventListener('click', () => {
+                moreModal.classList.remove('open');
+                openEditModal(null);
+            });
+            $('#more-edit-slide').addEventListener('click', () => {
+                moreModal.classList.remove('open');
+                const slide = slidesData[currentSlideIndex];
+                if (slide) openEditModal(slide.id);
+            });
+            $('#more-import-export').addEventListener('click', () => {
+                moreModal.classList.remove('open');
+                importModal.classList.add('open');
+            });
+            $('#more-user-guide').addEventListener('click', () => {
+                moreModal.classList.remove('open');
+                guideModal.classList.add('open');
+            });
+            $('#more-analytics').addEventListener('click', () => {
+                moreModal.classList.remove('open');
+                toggleAnalytics();
+            });
+            $('#more-market-intel').addEventListener('click', () => {
+                moreModal.classList.remove('open');
+                marketModal.classList.add('open');
+            });
+            $('#more-followup').addEventListener('click', () => {
+                moreModal.classList.remove('open');
+                generateFollowup();
+            });
+            $('#more-reset').addEventListener('click', () => {
+                moreModal.classList.remove('open');
+                resetToDefault();
+            });
+
+            // Edit modal
+            $('#edit-modal-close').addEventListener('click', closeEditModal);
+            $('#edit-modal-save').addEventListener('click', saveSlideFromModal);
+            $('#edit-modal-delete').addEventListener('click', deleteCurrentSlideModal);
+            $('#edit-modal-duplicate').addEventListener('click', duplicateSlide);
+
+            // Guide modal
+            $('#guide-modal-close').addEventListener('click', () => guideModal.classList.remove('open'));
+
+            // Import modal
+            $('#import-modal-close').addEventListener('click', () => importModal.classList.remove('open'));
+            $('#export-data-btn').addEventListener('click', exportData);
+            $('#import-file-input').addEventListener('change', (e) => {
+                if (e.target.files && e.target.files[0]) {
+                    importData(e.target.files[0]);
+                }
+                e.target.value = '';
+            });
+
+            // Market modal
+            $('#market-modal-close').addEventListener('click', () => marketModal.classList.remove('open'));
+            $('#market-analyze').addEventListener('click', analyzeMarket);
+
+            // Followup modal
+            $('#followup-modal-close').addEventListener('click', () => followupModal.classList.remove('open'));
+            $('#followup-copy').addEventListener('click', copyFollowup);
+
+            // Analytics
+            $('#analytics-close').addEventListener('click', () => {
+                $('#analytics-panel').classList.remove('open');
+            });
+
+            // Keyboard
+            document.addEventListener('keydown', handleKeydown);
+
+            // Swipe
+            let touchStartX = 0,
+                touchStartY = 0;
+            document.addEventListener('touchstart', (e) => {
+                touchStartX = e.changedTouches[0].screenX;
+                touchStartY = e.changedTouches[0].screenY;
+            });
+            document.addEventListener('touchend', (e) => {
+                const dx = e.changedTouches[0].screenX - touchStartX;
+                const dy = e.changedTouches[0].screenY - touchStartY;
+                if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 40) {
+                    if (dx < 0) nextSlide();
+                    else prevSlide();
+                }
+            });
+
+            // Fullscreen change
+            document.addEventListener('fullscreenchange', () => {
+                isFullscreen = !!document.fullscreenElement;
+                $('#fullscreen-toggle').innerHTML = isFullscreen ? '<i class="fas fa-compress"></i>' :
+                    '<i class="fas fa-expand"></i>';
+            });
+
+            // Resize
+            let resizeTimer;
+            window.addEventListener('resize', () => {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(() => renderChartsForCurrent(), 300);
+            });
+
+            // Modal overlay close
+            $$('.modal-overlay').forEach(modal => {
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) modal.classList.remove('open');
+                });
+            });
+
+            // Visual Upscaler
+            document.addEventListener('dblclick', (e) => {
+                if (e.target.closest('.slide-title')) generateVisualPrompt();
+            });
+            document.addEventListener('keydown', (e) => {
+                if (e.ctrlKey && e.shiftKey && (e.key === 'v' || e.key === 'V')) {
+                    e.preventDefault();
+                    generateVisualPrompt();
+                }
+            });
+
+            console.log('✅ Sovereign Data Spire – BİŞİŞ Pitch Deck (Telegram Notifications Enabled)');
+            console.log(`📊 ${slidesData.length} slides, language: ${currentLanguage}`);
+            console.log('🔒 Password:', DECK_PASSWORD ? 'ENABLED' : 'DISABLED');
+            console.log('🚪 Investor Gate:', INVESTOR_GATE_ENABLED ? 'ENABLED' : 'DISABLED');
+            console.log('🤖 Telegram Notifications:', TELEGRAM_NOTIFICATIONS_ENABLED && TELEGRAM_BOT_TOKEN !==
+                'YOUR_BOT_TOKEN_HERE' ? '✅ CONFIGURED' : '⚠️ NOT CONFIGURED');
+        }
+
+        // ============================================================
+        // CDN FALLBACK
+        // ============================================================
+        function handleCDNFallbacks() {
+            setTimeout(() => {
+                try {
+                    const testIcon = document.createElement('i');
+                    testIcon.className = 'fas fa-star';
+                    document.body.appendChild(testIcon);
+                    const computed = getComputedStyle(testIcon);
+                    const fontFamily = computed.fontFamily || '';
+                    if (!fontFamily.includes('Font Awesome')) {
+                        document.querySelectorAll('.fas, .far, .fal, .fab').forEach(el => {
+                            const cls = el.className;
+                            const map = {
+                                'fa-tower-broadcast': '📡',
+                                'fa-chart-line': '📈',
+                                'fa-eye': '👁️',
+                                'fa-exclamation-triangle': '⚠️',
+                                'fa-lightbulb': '💡',
+                                'fa-cubes': '🧊',
+                                'fa-list-check': '✅',
+                                'fa-water': '💧',
+                                'fa-shield-halved': '🛡️',
+                                'fa-bolt': '⚡',
+                                'fa-chart-pie': '📊',
+                                'fa-medal': '🏅',
+                                'fa-leaf': '🌿',
+                                'fa-paintbrush': '🎨',
+                                'fa-timeline': '⏳',
+                                'fa-handshake': '🤝',
+                                'fa-rocket': '🚀',
+                                'fa-globe': '🌐',
+                                'fa-lock': '🔒',
+                                'fa-brain': '🧠',
+                                'fa-microchip': '💻',
+                                'fa-cloud': '☁️',
+                                'fa-database': '🗄️',
+                                'fa-server': '🖥️'
+                            };
+                            let found = '';
+                            Object.keys(map).forEach(key => {
+                                if (cls.includes(key)) found = map[key];
+                            });
+                            el.textContent = found || '◆';
+                            el.className = '';
+                            el.style.fontFamily = 'inherit';
+                        });
+                    }
+                    document.body.removeChild(testIcon);
+                } catch (e) {}
+            }, 3000);
+
+            setTimeout(() => {
+                try {
+                    if (typeof Chart === 'undefined' && slidesData && slidesData.length > 0) {
+                        document.querySelectorAll('.chart-container').forEach(container => {
+                            container.classList.add('chart-error');
+                            const fallback = container.querySelector('.chart-fallback');
+                            if (fallback) {
+                                fallback.style.display = 'block';
+                                const idx = container.id.replace('chart-container-', '');
+                                const slide = slidesData[parseInt(idx)];
+                                if (slide && slide.chartData) {
+                                    const data = slide.chartData;
+                                    let html =
+                                        '<table><thead><tr><th>Label</th><th>Value</th></tr></thead><tbody>';
+                                    data.labels.forEach((label, i) => {
+                                        html += `<tr><td>${label}</td><td>${data.values[i] ?? '-'}</td></tr>`;
+                                    });
+                                    html += '</tbody></table>';
+                                    fallback.innerHTML = html;
+                                }
+                            }
+                        });
+                    }
+                } catch (e) {}
+            }, 3000);
+        }
+
+        // ============================================================
+        // START
+        // ============================================================
+        document.addEventListener('DOMContentLoaded', () => {
+            handleCDNFallbacks();
+            init();
+        });
+
+        if (document.readyState === 'complete' || document.readyState === 'interactive') {
+            handleCDNFallbacks();
+            init();
+        }
+
+        console.log('🏛️ BİŞİŞ – Sovereign Data Spire Pitch Deck (Telegram Edition)');
+        console.log('🤖 Notifications will be sent to your Telegram when investors access the deck.');
+        console.log('✅ Your bot token and chat ID are already pre‑filled – no further setup required!');
+    </script>
+</body>
+</html>
